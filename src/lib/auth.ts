@@ -1,61 +1,104 @@
+import { ZodError } from 'zod';
+import { signInSchema } from '@/lib/schema';
 import { PrismaAdapter } from '@auth/prisma-adapter';
-import { getServerSession } from 'next-auth';
-import { type NextAuthOptions } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import bcrypt from 'bcryptjs';
+import NextAuth, { DefaultSession } from 'next-auth';
+import Credentials from 'next-auth/providers/credentials';
 import prisma from '../../lib/prisma';
+import bcrypt from 'bcryptjs';
 
-export const authOptions: NextAuthOptions = {
+declare module 'next-auth' {
+  interface Session {
+    user?: {
+      id: string;
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+      role?: string;
+    } & DefaultSession['user'];
+  }
+
+  interface JWT {
+    role?: string;
+  }
+}
+
+export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
-  session: {
-    strategy: 'jwt',
-  },
   providers: [
-    CredentialsProvider({
-      name: 'credentials',
+    Credentials({
       credentials: {
-        email: { label: 'Email', type: 'email' },
+        email: { label: 'Email', type: 'text' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error('Email dan Password wajib diisi.');
+      authorize: async (credentials) => {
+        try {
+          if (!credentials?.email || !credentials?.password) {
+            return null;
+          }
+
+          const { email, password } = await signInSchema.parseAsync(
+            credentials
+          );
+
+          const user = await prisma.user.findUnique({
+            where: { email },
+          });
+
+          if (!user) {
+            throw new Error('Invalid credentials.');
+          }
+
+          const isPasswordValid = await bcrypt.compare(password, user.password);
+          if (!isPasswordValid) {
+            throw new Error('Invalid credentials.');
+          }
+
+          const { password: _, id, role, ...userWithoutPassword } = user;
+
+          return { ...userWithoutPassword, id: id.toString(), role };
+        } catch (error) {
+          console.error('Authorize error:', error);
+          if (error instanceof ZodError) {
+            return null;
+          }
+          return null;
         }
-
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
-        });
-
-        if (
-          !user ||
-          !(await bcrypt.compare(credentials.password, user.password))
-        ) {
-          throw new Error('Email atau Password salah.');
-        }
-
-        return user;
       },
     }),
   ],
   pages: {
-    signIn: '/auth/signin',
+    signIn: '/sign-in',
   },
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.role = user.role;
-        token.id = user.id;
+    authorized: async ({ auth }) => {
+      return !!auth;
+    },
+    jwt: async ({ token, user }) => {
+      if ((user as { role?: string })?.role) {
+        token.role = (user as { role?: string }).role;
       }
       return token;
     },
-    async session({ session, token }) {
+    session: async ({ session, token }) => {
       if (token) {
-        session.user.id = token.id as string;
-        session.user.role = token.role as string;
+        session.user = {
+          id: token.id as string,
+          email: token.email as string,
+          role: token.role as string,
+          emailVerified: (token as any).emailVerified ?? null,
+        };
       }
       return session;
     },
+    redirect: async ({ url, baseUrl }) => {
+      if (url.startsWith('/dashboard')) {
+        return url;
+      }
+      return `${baseUrl}/dashboard`;
+    },
   },
-};
-
-export const getAuthSession = () => getServerSession(authOptions);
+  session: {
+    strategy: 'jwt',
+  },
+  trustHost: true,
+});

@@ -1,3 +1,5 @@
+'use client';
+
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -9,55 +11,77 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import React from 'react';
+import { ActionResult } from '@/types';
+import React, { useActionState } from 'react';
+import { Loader2 } from 'lucide-react';
+import { useFormStatus } from 'react-dom';
+import { signInAction } from '../lib/actions';
 import Link from 'next/link';
+
+const initialState: ActionResult = {
+  error: '',
+};
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <Button disabled={pending} type="submit" className="w-full">
+      {pending ? (
+        <>
+          <Loader2 className="animate-spin" />
+          Please wait
+        </>
+      ) : (
+        'Sign In'
+      )}
+    </Button>
+  );
+}
 
 export default function SignInForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<'div'>) {
+  const [state, formAction] = useActionState(signInAction, initialState);
+
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl text-center">Login</CardTitle>
+          <CardTitle className="text-2xl text-center">Sign In</CardTitle>
           <CardDescription className="text-center">
             Enter your email below to login to your account
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          {state.error && (
+            <p className="text-sm text-center text-red-500 pb-6">
+              {state.error}
+            </p>
+          )}
+          <form action={formAction}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="m@example.com"
                   required
                 />
               </div>
               <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                  <Link
-                    id="forgot-password"
-                    href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </Link>
-                </div>
+                <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
+                  name="password"
                   type="password"
                   placeholder="********"
                   required
                 />
               </div>
-              <Button type="submit" className="w-full">
-                Login
-              </Button>
+              <SubmitButton />
             </div>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{' '}

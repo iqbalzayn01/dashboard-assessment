@@ -21,38 +21,22 @@ enum Role {
 }
 
 model User {
-  id       String @id @default(cuid())
+  id       Int    @id @default(autoincrement())
   email    String @unique
   password String
   role     Role
 
-  siswa Siswa?
-  ortu  Ortu?
-}
-
-model Siswa {
-  id       String  @id @default(cuid())
-  userId   String  @unique
-  user     User    @relation(fields: [userId], references: [id])
-  nama     String
-  nilai    Nilai[]
-  ortuAnak Ortu[]  @relation("AnakOrtu")
-}
-
-model Ortu {
-  id     String  @id @default(cuid())
-  userId String  @unique
-  user   User    @relation(fields: [userId], references: [id])
-  anak   Siswa[] @relation("AnakOrtu")
+  nilai Nilai[] @relation("UserToNilai")
 }
 
 model Nilai {
-  id            String   @id @default(cuid())
-  siswaId       String
-  siswa         Siswa    @relation(fields: [siswaId], references: [id])
+  id            Int    @id @default(autoincrement())
+  siswaId       Int
   mataPelajaran String
   nilai         Int
   semester      String
   tahunAjaran   String
-  createdAt     DateTime @default(now())
+
+  siswa     User     @relation("UserToNilai", fields: [siswaId], references: [id])
+  createdAt DateTime @default(now())
 }
