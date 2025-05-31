@@ -2,12 +2,27 @@ import { AppSidebar } from './_components/app-sidebar';
 import { SectionCards } from './_components/section-cards';
 import { SiteHeader } from './_components/site-header';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
+import { auth } from '@/lib/auth';
+import { mapSessionToUser } from '@/lib/session-helper';
+import { redirect } from 'next/navigation';
 import React from 'react';
 
-export default function Dashboard() {
+export default async function Dashboard() {
+  const session = await auth();
+  if (!session) {
+    return redirect('/sign-in');
+  }
+
+  const { user } = session || {};
+
+  const dataUser = mapSessionToUser({
+    user,
+    expires: '',
+  });
+
   return (
     <SidebarProvider>
-      <AppSidebar variant="inset" />
+      <AppSidebar variant="inset" dataUser={dataUser} />
       <SidebarInset>
         <SiteHeader />
         <div className="flex flex-1 flex-col">

@@ -10,19 +10,13 @@ export type Tparams = {
 export type Tedit = {
   params: Promise<Tparams>;
 };
+
 export type TuserSession = {
   user?: {
     id: string;
-    name?: string | null;
+    name?: string | undefined;
     email?: string | null;
-    image?: string | null;
+    image?: string | '/avatars/shadcn.jpg';
     role?: string;
   };
-};
-export type Tuser = {
-  id: string;
-  name: string | null;
-  email: string | null;
-  image: string | null;
-  role: string;
 };
