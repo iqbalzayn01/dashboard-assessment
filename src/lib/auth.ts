@@ -105,11 +105,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return session;
     },
+    // redirect: async ({ url, baseUrl }) => {
+    //   if (url.startsWith('/dashboard/dynamic sesuai role')) {
+    //     return url;
+    //   }
+    //   return `${baseUrl}/dashboard/dynamic sesuai role`;
+    // },
+
     redirect: async ({ url, baseUrl }) => {
-      if (url.startsWith('/dashboard')) {
-        return url;
-      }
-      return `${baseUrl}/dashboard`;
+      if (url.startsWith(baseUrl)) return url;
+      if (url.startsWith('/')) return `${baseUrl}${url}`;
+      return baseUrl;
     },
   },
   session: {

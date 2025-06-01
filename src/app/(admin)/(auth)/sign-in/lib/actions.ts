@@ -43,7 +43,7 @@ export async function signInAction(
     };
   }
 
-  let redirectTo = '/dashboard';
+  let redirectTo = '/';
   switch (existingUser.role) {
     case 'guru':
       redirectTo = '/dashboard/teachers';
@@ -53,6 +53,9 @@ export async function signInAction(
       break;
     case 'orangtua':
       redirectTo = '/dashboard/parents';
+      break;
+    default:
+      redirectTo = '/dashboard';
       break;
   }
 

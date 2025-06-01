@@ -28,17 +28,51 @@ model User {
   password String
   role     Role
 
-  nilai Nilai[] @relation("UserToNilai")
+  siswa Siswa?
+  guru  Guru?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Siswa {
+  id    Int    @id @default(autoincrement())
+  kelas String
+  nis   String @unique
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @unique
+
+  nilai Nilai[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Guru {
+  id  Int    @id @default(autoincrement())
+  nip String @unique
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @unique
+
+  nilai     Nilai[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Nilai {
   id            Int    @id @default(autoincrement())
-  siswaId       Int
   mataPelajaran String
   nilai         Int
   semester      String
   tahunAjaran   String
 
-  siswa     User     @relation("UserToNilai", fields: [siswaId], references: [id])
+  siswa   Siswa @relation(fields: [siswaId], references: [id])
+  siswaId Int
+  guru    Guru  @relation(fields: [guruId], references: [id])
+  guruId  Int
+
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
