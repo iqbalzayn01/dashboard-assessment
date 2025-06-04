@@ -25,17 +25,17 @@ const data = {
   navMain: [
     {
       title: 'Dashboard',
-      url: '#',
+      url: '/dashboard/teachers',
       icon: LayoutDashboardIcon,
     },
     {
       title: 'Data Siswa',
-      url: '#',
+      url: '/dashboard/teachers/data-siswa',
       icon: UsersIcon,
     },
     {
       title: 'Input Nilai',
-      url: '#',
+      url: '/dashboard/teachers/input-nilai',
       icon: ListIcon,
     },
   ],
@@ -55,7 +55,7 @@ export function AppSidebar({ dataUser, ...props }: AppSidebarProps) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="#">
+              <a href="/">
                 <ArrowUpCircleIcon className="h-5 w-5" />
                 <span className="text-base font-semibold">Acme Inc.</span>
               </a>

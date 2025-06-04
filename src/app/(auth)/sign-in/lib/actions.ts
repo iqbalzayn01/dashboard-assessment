@@ -4,7 +4,7 @@ import { signInSchema } from '@/lib/schema';
 import { ActionResult } from '@/types';
 import { signIn } from '@/lib/auth';
 import bcrypt from 'bcryptjs';
-import prisma from '../../../../../../lib/prisma';
+import prisma from '../../../../../lib/prisma';
 
 export async function signInAction(
   _: unknown,

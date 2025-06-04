@@ -4,7 +4,7 @@ export type ActionResult = {
 };
 
 export type Tparams = {
-  id: string;
+  id: number;
 };
 
 export type Tedit = {
@@ -13,10 +13,22 @@ export type Tedit = {
 
 export type TuserSession = {
   user?: {
-    id: string;
+    id: number;
     name?: string | undefined;
     email?: string | null;
     image?: string | '/avatars/shadcn.jpg';
     role?: string;
+  };
+};
+
+export type Tusers = {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  siswa?: {
+    id: number;
+    nis: string;
+    kelas: string;
   };
 };

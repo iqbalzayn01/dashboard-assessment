@@ -30,6 +30,7 @@ model User {
 
   siswa Siswa?
   guru  Guru?
+  orangTua OrangTua?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -44,6 +45,21 @@ model Siswa {
   userId Int  @unique
 
   nilai Nilai[]
+  OrangTua OrangTua[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+}
+
+model OrangTua {
+  id    Int    @id @default(autoincrement())
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @unique
+
+  siswa     Siswa  @relation(fields: [nissiswa], references: [nis])
+  nissiswa  String @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -61,12 +77,19 @@ model Guru {
   updatedAt DateTime @updatedAt
 }
 
+enum JenisNilai {
+  tugas
+  ulangan
+  uts
+  uas
+}
+
 model Nilai {
   id            Int    @id @default(autoincrement())
   mataPelajaran String
   nilai         Int
   semester      String
-  tahunAjaran   String
+  jenisNilai    JenisNilai
 
   siswa   Siswa @relation(fields: [siswaId], references: [id])
   siswaId Int
