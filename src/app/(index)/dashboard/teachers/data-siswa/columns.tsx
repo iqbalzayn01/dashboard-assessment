@@ -1,36 +1,32 @@
 'use client';
 
 import * as React from 'react';
+import { ColumnDef } from '@tanstack/react-table';
 import {
-  ColumnDef,
-  ColumnFiltersState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  SortingState,
-  useReactTable,
-  VisibilityState,
-} from '@tanstack/react-table';
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Tusers } from '@/types';
 import { Button } from '@/components/ui/button';
 import { ArrowUpDown } from 'lucide-react';
 
 export const columns: ColumnDef<Tusers>[] = [
-  // {
-  //   id: 'number',
-  //   header: 'No.',
-  //   cell: ({ row }) => {
-  //     return (
-  //       <div>
-  //         <span>{row.index + 1}</span>
-  //       </div>
-  //     );
-  //   },
-  //   enableSorting: false,
-  //   enableColumnFilter: false,
-  // },
+  {
+    id: 'number',
+    header: 'No.',
+    cell: ({ row }) => {
+      return (
+        <div>
+          <span>{row.index + 1}</span>
+        </div>
+      );
+    },
+    enableSorting: false,
+    enableColumnFilter: false,
+  },
   {
     accessorKey: 'nis',
     header: 'NIS',
@@ -76,14 +72,44 @@ export const columns: ColumnDef<Tusers>[] = [
   },
   {
     accessorKey: 'kelas',
-    header: 'Kelas',
-    cell: ({ row }) => {
-      const user = row.original;
+    header: ({ column }) => {
+      const uniqueKelas = new Set<string>();
+
+      column.getFacetedRowModel().rows.forEach((row) => {
+        const user = row.original;
+        const kelas = user.siswa?.kelas;
+        if (kelas) uniqueKelas.add(kelas);
+      });
+
       return (
-        <div>
-          <span>{user.siswa?.kelas}</span>
+        <div className="flex items-center gap-1">
+          <span className="text-sm font-medium">Kelas</span>
+          <Select
+            onValueChange={(value) => column.setFilterValue(value)}
+            value={(column.getFilterValue() as string) ?? ''}
+          >
+            <SelectTrigger className="h-8 w-[160px]">
+              <SelectValue placeholder="Pilih kelas" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="__all__">Semua</SelectItem>
+              {[...uniqueKelas].map((kelas) => (
+                <SelectItem key={kelas} value={kelas}>
+                  {kelas}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       );
+    },
+    cell: ({ row }) => {
+      return <span>{row.original.siswa?.kelas}</span>;
+    },
+    enableColumnFilter: true,
+    filterFn: (row, _columnId, filterValue) => {
+      if (filterValue === '__all__') return true;
+      return row.original.siswa?.kelas === filterValue;
     },
   },
 ];

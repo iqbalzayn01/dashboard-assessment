@@ -7,9 +7,9 @@ export async function getDataSiswa(): Promise<Tusers[]> {
       where: {
         role: 'siswa',
       },
-      // orderBy: {
-      //   createdAt: 'desc',
-      // },
+      orderBy: {
+        createdAt: 'desc',
+      },
       select: {
         id: true,
         name: true,

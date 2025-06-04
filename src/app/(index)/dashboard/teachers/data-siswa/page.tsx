@@ -26,14 +26,6 @@ export default async function DataSiswa() {
               Manage your data and view their data performance.
             </CardDescription>
           </div>
-          <Button size="sm" asChild>
-            <Link href="/dashboard-admin-iqbalzayn/my-portfolio/create">
-              <PlusCircle className="h-3.5 w-3.5" />
-              <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                Add Category
-              </span>
-            </Link>
-          </Button>
         </CardHeader>
         <CardContent>
           <DataTable columns={columns} data={dataSiswa} />
