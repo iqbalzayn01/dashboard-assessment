@@ -1,10 +1,25 @@
 import { z } from 'zod';
 
-export const ALLOW_MIME_TYPES = ['image/jpg', 'image/jpeg', 'image/png'];
-export const MAX_FILE_SIZE = 1024 * 1024 * 2;
-
 export const roleEnum = z.enum(['guru', 'siswa', 'orangtua']);
 export type Role = z.infer<typeof roleEnum>;
+
+export const jenisNilaiEnum = z.enum(['tugas', 'ulangan', 'uts', 'uas']);
+export type JenisNilai = z.infer<typeof jenisNilaiEnum>;
+
+export const mataPelajaranEnum = z.enum([
+  'matematika',
+  'bahasa_indonesia',
+  'ipa',
+  'ips',
+  'pjok',
+  'agama',
+  'seni_budaya',
+  'tik',
+]);
+export type MataPelajaran = z.infer<typeof mataPelajaranEnum>;
+
+export const semesterEnum = z.enum(['ganjil', 'genap']);
+export type Semester = z.infer<typeof semesterEnum>;
 
 export const signInSchema = z.object({
   email: z.string().email(),
@@ -14,43 +29,30 @@ export const signInSchema = z.object({
 export const userSchema = z.object({
   name: z.string().min(1),
   email: z.string().email(),
-  phone: z
-    .string()
-    .regex(/^08\d{8,11}$/, 'Nomor HP tidak valid')
-    .max(20),
+  phone: z.string().min(8),
   password: z.string().min(6),
   role: roleEnum,
 });
 
 export const siswaSchema = z.object({
   kelas: z.string().min(1),
-  nis: z.string().min(5),
-  userId: z.number().int().positive(),
+  nis: z.string().min(1),
+  userId: z.number(),
 });
 
 export const guruSchema = z.object({
-  nip: z.string().regex(/^\d{18}$/, 'NIP harus terdiri dari 18 digit'),
-  userId: z.number().int().positive(),
+  nip: z.string().min(1),
+  userId: z.number(),
 });
 
 export const nilaiSchema = z.object({
-  siswaId: z.number().int().positive(),
-  guruId: z.number().int().positive(),
-  mataPelajaran: z.string().min(2),
-  nilai: z.number().min(0).max(100),
-  semester: z.enum(['Ganjil', 'Genap']),
-  tahunAjaran: z.string().regex(/^\d{4}\/\d{4}$/, {
-    message: 'Format tahun ajaran harus 2024/2025',
-  }),
-});
-
-export const fileUploadSchema = z.object({
-  file: z
-    .custom<File>()
-    .refine((file) => ALLOW_MIME_TYPES.includes(file.type), {
-      message: 'Tipe file tidak didukung',
-    })
-    .refine((file) => file.size <= MAX_FILE_SIZE, {
-      message: 'Ukuran file maksimal 2MB',
-    }),
+  siswaId: z.number(),
+  guruId: z.number(),
+  mataPelajaran: mataPelajaranEnum,
+  nilai: z.coerce.number().min(0).max(100),
+  semester: semesterEnum,
+  tahunAjaran: z
+    .string()
+    .regex(/^\d{4}\/\d{4}$/, 'Format tahun ajaran harus seperti 2024/2025'),
+  jenisNilai: jenisNilaiEnum,
 });

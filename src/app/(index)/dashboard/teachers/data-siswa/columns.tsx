@@ -57,6 +57,7 @@ export const columns: ColumnDef<Tusers>[] = [
       return (
         <Button
           variant="ghost"
+          className="cursor-pointer"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           Email
@@ -88,13 +89,19 @@ export const columns: ColumnDef<Tusers>[] = [
             onValueChange={(value) => column.setFilterValue(value)}
             value={(column.getFilterValue() as string) ?? ''}
           >
-            <SelectTrigger className="h-8 w-[160px]">
+            <SelectTrigger className="h-8 w-[160px] cursor-pointer">
               <SelectValue placeholder="Pilih kelas" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="__all__">Semua</SelectItem>
+              <SelectItem value="__all__" className="cursor-pointer">
+                Semua
+              </SelectItem>
               {[...uniqueKelas].map((kelas) => (
-                <SelectItem key={kelas} value={kelas}>
+                <SelectItem
+                  key={kelas}
+                  value={kelas}
+                  className="cursor-pointer"
+                >
                   {kelas}
                 </SelectItem>
               ))}
