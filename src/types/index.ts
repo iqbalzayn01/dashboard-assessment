@@ -16,7 +16,7 @@ export type TuserSession = {
     id: number;
     name?: string | undefined;
     email?: string | null;
-    image?: string | '/avatars/shadcn.jpg';
+    imgUrl?: string | null;
     role?: string;
   };
 };
@@ -26,9 +26,23 @@ export type Tusers = {
   name: string;
   email: string;
   role: string;
+  imgUrl?: string | null;
   siswa?: {
     id: number;
     nis: string;
     kelas: string;
+    alamat: string;
+    jenisKelamin: string;
+    tanggalLahir: Date;
+    tempatLahir: string;
+    agama: string;
+    nilai: {
+      id: number;
+      mataPelajaran: string;
+      nilai: number;
+      semester: number;
+      jenisNilai: string;
+      tahunAjaran: string;
+    }[];
   };
 };

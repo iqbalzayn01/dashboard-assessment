@@ -12,7 +12,7 @@ declare module 'next-auth' {
       id: string;
       name?: string | null;
       email?: string | null;
-      image?: string | null;
+      imgUrl?: string | null;
       role?: string;
       emailVerified?: Date | null;
     } & DefaultSession['user'];
@@ -22,7 +22,7 @@ declare module 'next-auth' {
     id?: string;
     name?: string | null;
     email?: string | null;
-    image?: string | null;
+    imgUrl?: string | null;
     role?: string;
     emailVerified?: Date | null;
   }
@@ -38,9 +38,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       authorize: async (credentials) => {
         try {
-          if (!credentials?.email || !credentials?.password) {
-            return null;
-          }
+          if (!credentials?.email || !credentials?.password) return null;
 
           const { email, password } = await signInSchema.parseAsync(
             credentials
@@ -50,23 +48,28 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             where: { email },
           });
 
-          if (!user) {
-            throw new Error('Invalid credentials.');
-          }
+          if (!user) throw new Error('Invalid credentials');
 
           const isPasswordValid = await bcrypt.compare(password, user.password);
-          if (!isPasswordValid) {
-            throw new Error('Invalid credentials.');
-          }
+          if (!isPasswordValid) throw new Error('Invalid credentials');
 
-          const { password: _, id, role, ...userWithoutPassword } = user;
+          const {
+            password: _,
+            id,
+            role,
+            imgUrl,
+            ...userWithoutPassword
+          } = user;
 
-          return { ...userWithoutPassword, id: id.toString(), role };
+          return {
+            ...userWithoutPassword,
+            id: id.toString(),
+            role,
+            imgUrl,
+          };
         } catch (error) {
           console.error('Authorize error:', error);
-          if (error instanceof ZodError) {
-            return null;
-          }
+          if (error instanceof ZodError) return null;
           return null;
         }
       },
@@ -84,8 +87,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;
-        token.image = user.image;
         token.role = (user as any).role;
+        token.imgUrl = (user as any).imgUrl ?? null;
         token.emailVerified = (user as any).emailVerified ?? null;
       }
       return token;
@@ -96,8 +99,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           id: token.id as string,
           name: token.name as string,
           email: token.email as string,
-          image: token.image as string,
           role: token.role as string,
+          imgUrl: token.imgUrl as string,
           emailVerified: token.emailVerified
             ? new Date(token.emailVerified as string)
             : null,
@@ -105,13 +108,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return session;
     },
-    // redirect: async ({ url, baseUrl }) => {
-    //   if (url.startsWith('/dashboard/dynamic sesuai role')) {
-    //     return url;
-    //   }
-    //   return `${baseUrl}/dashboard/dynamic sesuai role`;
-    // },
-
     redirect: async ({ url, baseUrl }) => {
       if (url.startsWith(baseUrl)) return url;
       if (url.startsWith('/')) return `${baseUrl}${url}`;

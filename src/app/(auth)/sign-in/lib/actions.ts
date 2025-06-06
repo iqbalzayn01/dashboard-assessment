@@ -55,7 +55,7 @@ export async function signInAction(
       redirectTo = '/dashboard/parents';
       break;
     default:
-      redirectTo = '/dashboard';
+      redirectTo = '/';
       break;
   }
 

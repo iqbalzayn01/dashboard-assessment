@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  ArrowUpCircleIcon,
-  LayoutDashboardIcon,
-  ListIcon,
-  UsersIcon,
-} from 'lucide-react';
-
+import { LayoutDashboardIcon, ListIcon, UsersIcon } from 'lucide-react';
 import { NavMain } from './nav-main';
 import { NavUser } from './nav-user';
 import {
@@ -15,10 +9,11 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { TuserSession } from '@/types';
+import Link from 'next/link';
+import Image from 'next/image';
 import * as React from 'react';
 
 const data = {
@@ -51,15 +46,19 @@ export function AppSidebar({ dataUser, ...props }: AppSidebarProps) {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
-            >
-              <a href="/">
-                <ArrowUpCircleIcon className="h-5 w-5" />
-                <span className="text-base font-semibold">Acme Inc.</span>
-              </a>
-            </SidebarMenuButton>
+            <Link href="/" className="flex items-center gap-2">
+              <Image
+                src="/logo-tutwurihandayani.png"
+                alt="Logo"
+                width={80}
+                height={80}
+                className="object-cover"
+                priority={true}
+              />
+              <span className="text-xl font-bold">
+                Dashboard Penilaian SD Karadenan 01
+              </span>
+            </Link>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>

@@ -37,15 +37,6 @@ export const columns: ColumnDef<Tusers>[] = [
     },
   },
   {
-    accessorKey: 'email',
-    header: 'Email',
-    cell: ({ row }) => {
-      const user = row.original;
-      return <div className="lowercase">{user.email}</div>;
-    },
-    enableColumnFilter: true,
-  },
-  {
     accessorKey: 'kelas',
     header: ({ column }) => {
       const uniqueKelas = new Set<string>();
@@ -91,6 +82,24 @@ export const columns: ColumnDef<Tusers>[] = [
     filterFn: (row, _columnId, filterValue) => {
       if (filterValue === '__all__') return true;
       return row.original.siswa?.kelas === filterValue;
+    },
+  },
+  {
+    accessorKey: 'nilai',
+    header: 'Nilai',
+    cell: ({ row }) => {
+      const user = row.original;
+      const nilaiList = user.siswa?.nilai || [];
+      return (
+        <div className="flex flex-col gap-1">
+          {nilaiList.map((nilai) => (
+            <div key={nilai.id} className="flex items-center gap-2">
+              <span className="font-medium">{nilai.mataPelajaran}:</span>
+              <span>{nilai.nilai}</span>
+            </div>
+          ))}
+        </div>
+      );
     },
   },
 ];

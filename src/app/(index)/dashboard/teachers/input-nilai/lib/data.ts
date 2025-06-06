@@ -1,4 +1,46 @@
+import { Tusers } from '@/types';
 import prisma from '../../../../../../../lib/prisma';
+
+export async function getDataSiswa(): Promise<Tusers[]> {
+  try {
+    const data = await prisma.user.findMany({
+      where: {
+        role: 'siswa',
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        siswa: {
+          select: {
+            id: true,
+            nis: true,
+            kelas: true,
+            nilai: {
+              select: {
+                id: true,
+                mataPelajaran: true,
+                nilai: true,
+                semester: true,
+                jenisNilai: true,
+                tahunAjaran: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return data as Tusers[];
+  } catch (error) {
+    console.error('Error fetching data siswa:', error);
+    return [];
+  }
+}
 
 export async function getAllKelas(): Promise<string[]> {
   const kelasList = await prisma.siswa.findMany({
@@ -13,34 +55,8 @@ export async function getSiswaByKelas(kelas: string) {
   return await prisma.siswa.findMany({
     where: { kelas },
     include: {
-      user: {
-        select: { name: true, email: true },
-      },
+      user: { select: { name: true } },
     },
     orderBy: { nis: 'asc' },
-  });
-}
-
-export async function getNilaiByGuru(guruId: number) {
-  return await prisma.nilai.findMany({
-    where: { guruId },
-    include: {
-      siswa: {
-        include: {
-          user: { select: { name: true } },
-        },
-      },
-    },
-    orderBy: { createdAt: 'desc' },
-  });
-}
-
-export async function getNilaiById(id: number) {
-  return await prisma.nilai.findUnique({
-    where: { id },
-    include: {
-      siswa: true,
-      guru: true,
-    },
   });
 }

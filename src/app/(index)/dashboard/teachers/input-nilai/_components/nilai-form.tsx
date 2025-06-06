@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useActionState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useFormStatus } from 'react-dom';
+import { useActionState } from 'react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { AlertCircle, Loader2 } from 'lucide-react';
-import { ActionResult } from '@/types';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -15,18 +14,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { submitNilai, updateNilai } from '../lib/actions';
-import { JenisNilai, Siswa, Nilai } from '@prisma/client';
-import { mataPelajaranEnum } from '@/lib/schema';
+import { AlertCircle, Loader2, CheckCircle } from 'lucide-react';
+import { submitNilai } from '../lib/actions';
+import { JenisNilai, MataPelajaran } from '@prisma/client';
+import { ActionResult } from '@/types';
 
 interface NilaiFormProps {
-  type?: 'ADD' | 'EDIT';
-  data?: (Nilai & { siswa: Siswa }) | null;
   kelasOptions: string[];
 }
 
 const initialState: ActionResult = {
   error: '',
+  success: '',
 };
 
 const SubmitButton = () => {
@@ -45,30 +44,16 @@ const SubmitButton = () => {
   );
 };
 
-export default function NilaiForm({
-  type = 'ADD',
-  data,
-  kelasOptions,
-}: NilaiFormProps) {
-  const updateWithId = (_: unknown, formData: FormData) =>
-    updateNilai(_, formData, data?.id ?? 0);
-
-  const [state, formAction] = useActionState(
-    type === 'ADD' ? submitNilai : updateWithId,
-    initialState
-  );
-
-  const [selectedKelas, setSelectedKelas] = React.useState<string>(
-    data?.siswa?.kelas || ''
-  );
-  const [siswaOptions, setSiswaOptions] = React.useState<
+export default function NilaiForm({ kelasOptions }: NilaiFormProps) {
+  const [state, formAction] = useActionState(submitNilai, initialState);
+  const [selectedKelas, setSelectedKelas] = useState('');
+  const [siswaOptions, setSiswaOptions] = useState<
     { id: number; name: string; nis: string }[]
   >([]);
-  const [selectedSiswaId, setSelectedSiswaId] = React.useState<string>(
-    data?.siswaId?.toString() || ''
-  );
+  const [selectedSiswaId, setSelectedSiswaId] = useState('');
+  const formRef = useRef<HTMLFormElement>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (selectedKelas) {
       fetch(`/api/siswa?kelas=${selectedKelas}`)
         .then((res) => res.json())
@@ -78,9 +63,27 @@ export default function NilaiForm({
     }
   }, [selectedKelas]);
 
+  useEffect(() => {
+    if (state.success && formRef.current) {
+      formRef.current.reset();
+      setSelectedKelas('');
+      setSelectedSiswaId('');
+    }
+  }, [state.success]);
+
   return (
-    <form action={formAction} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {state.error !== '' && (
+    <form action={formAction} className="grid gap-4" ref={formRef}>
+      {state.success && (
+        <Alert variant="default">
+          <AlertTitle className="text-xl text-emerald-400">
+            <CheckCircle className="inline mr-2" />
+            Berhasil
+          </AlertTitle>
+          <AlertDescription>{state.success}</AlertDescription>
+        </Alert>
+      )}
+
+      {state.error && (
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
@@ -88,122 +91,113 @@ export default function NilaiForm({
         </Alert>
       )}
 
-      <div className="space-y-1">
-        <Label htmlFor="kelas">Kelas</Label>
-        <Select
-          value={selectedKelas}
-          onValueChange={(val) => {
-            setSelectedKelas(val);
-            setSelectedSiswaId('');
-          }}
-        >
-          <SelectTrigger id="kelas">
-            <SelectValue placeholder="Pilih kelas" />
-          </SelectTrigger>
-          <SelectContent>
-            {kelasOptions.map((kelas) => (
-              <SelectItem key={kelas} value={kelas}>
-                {kelas}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-1">
+          <Label htmlFor="kelas">Kelas</Label>
+          <Select
+            value={selectedKelas}
+            onValueChange={(val) => {
+              setSelectedKelas(val);
+              setSelectedSiswaId('');
+            }}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Pilih kelas" />
+            </SelectTrigger>
+            <SelectContent>
+              {kelasOptions.map((kelas) => (
+                <SelectItem key={kelas} value={kelas}>
+                  {kelas}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-      <div className="space-y-1">
-        <Label htmlFor="siswaId">Siswa</Label>
-        <Select
-          name="siswaId"
-          value={selectedSiswaId}
-          onValueChange={setSelectedSiswaId}
-          required
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Pilih siswa" />
-          </SelectTrigger>
-          <SelectContent>
-            {siswaOptions.map((siswa) => (
-              <SelectItem key={siswa.id} value={siswa.id.toString()}>
-                {`${siswa.nis} - ${siswa.name}`}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+        <div className="space-y-1">
+          <Label htmlFor="siswaId">Siswa</Label>
+          <Select
+            name="siswaId"
+            value={selectedSiswaId}
+            onValueChange={setSelectedSiswaId}
+            required
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Pilih siswa" />
+            </SelectTrigger>
+            <SelectContent>
+              {siswaOptions.map((s) => (
+                <SelectItem key={s.id} value={s.id.toString()}>
+                  {`(${s.nis}) - ${s.name}`}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-      <div className="space-y-1">
-        <Label htmlFor="mataPelajaran">Mata Pelajaran</Label>
-        <Select
-          name="mataPelajaran"
-          defaultValue={data?.mataPelajaran}
-          required
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Pilih mata pelajaran" />
-          </SelectTrigger>
-          <SelectContent>
-            {mataPelajaranEnum.options.map((mp) => (
-              <SelectItem key={mp} value={mp}>
-                {mp}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+        <div className="space-y-1">
+          <Label htmlFor="mataPelajaran">Mata Pelajaran</Label>
+          <Select name="mataPelajaran" required>
+            <SelectTrigger>
+              <SelectValue placeholder="Pilih pelajaran" />
+            </SelectTrigger>
+            <SelectContent className="uppercase">
+              {Object.values(MataPelajaran).map((mp) => {
+                const formatted = mp
+                  .split('_')
+                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join(' ');
 
-      <div className="space-y-1">
-        <Label htmlFor="nilai">Nilai</Label>
-        <Input
-          type="number"
-          name="nilai"
-          id="nilai"
-          defaultValue={data?.nilai}
-          required
-        />
-      </div>
+                return (
+                  <SelectItem key={mp} value={mp}>
+                    {formatted}
+                  </SelectItem>
+                );
+              })}
+            </SelectContent>
+          </Select>
+        </div>
 
-      <div className="space-y-1">
-        <Label htmlFor="semester">Semester</Label>
-        <Select name="semester" defaultValue={data?.semester || ''} required>
-          <SelectTrigger>
-            <SelectValue placeholder="Pilih semester" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="ganjil">Ganjil</SelectItem>
-            <SelectItem value="genap">Genap</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+        <div className="space-y-1">
+          <Label htmlFor="nilai">Nilai</Label>
+          <Input type="number" name="nilai" required />
+        </div>
 
-      <div className="space-y-1">
-        <Label htmlFor="tahunAjaran">Tahun Ajaran</Label>
-        <Input
-          name="tahunAjaran"
-          id="tahunAjaran"
-          placeholder="2024/2025"
-          defaultValue={data?.tahunAjaran}
-          required
-        />
-      </div>
+        <div className="space-y-1">
+          <Label htmlFor="semester">Semester</Label>
+          <Input type="number" name="semester" required />
+        </div>
 
-      <div className="space-y-1">
-        <Label htmlFor="jenisNilai">Jenis Nilai</Label>
-        <Select name="jenisNilai" defaultValue={data?.jenisNilai} required>
-          <SelectTrigger>
-            <SelectValue placeholder="Pilih jenis" />
-          </SelectTrigger>
-          <SelectContent>
-            {Object.values(JenisNilai).map((j) => (
-              <SelectItem key={j} value={j}>
-                {j}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+        <div className="space-y-1">
+          <Label htmlFor="tahunAjaran">Tahun Ajaran</Label>
+          <Input name="tahunAjaran" placeholder="2024/2025" required />
+        </div>
 
-      <div className="md:col-span-2 flex justify-end gap-2">
-        <SubmitButton />
+        <div className="space-y-1">
+          <Label htmlFor="jenisNilai">Jenis Nilai</Label>
+          <Select name="jenisNilai" required>
+            <SelectTrigger>
+              <SelectValue placeholder="Pilih jenis" />
+            </SelectTrigger>
+            <SelectContent className="uppercase">
+              {Object.values(JenisNilai).map((j) => {
+                const formatted = j
+                  .split(' ')
+                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join(' ');
+                return (
+                  <SelectItem key={j} value={j}>
+                    {formatted}
+                  </SelectItem>
+                );
+              })}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="md:col-span-2 flex justify-end">
+          <SubmitButton />
+        </div>
       </div>
     </form>
   );

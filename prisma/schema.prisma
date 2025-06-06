@@ -21,12 +21,13 @@ enum Role {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
+  id       Int     @id @default(autoincrement())
   name     String
-  phone    String @unique @db.VarChar(20)
-  email    String @unique
+  notelp   String  @unique @db.VarChar(20)
+  email    String  @unique
   password String
   role     Role
+  imgUrl   String?
 
   siswa    Siswa?
   guru     Guru?
@@ -37,9 +38,14 @@ model User {
 }
 
 model Siswa {
-  id    Int    @id @default(autoincrement())
-  kelas String
-  nis   String @unique
+  id           Int      @id @default(autoincrement())
+  nis          String   @unique
+  kelas        String
+  alamat       String
+  jenisKelamin String
+  tanggalLahir DateTime
+  tempatLahir  String
+  agama        String
 
   user   User @relation(fields: [userId], references: [id])
   userId Int  @unique
@@ -65,32 +71,34 @@ model OrangTua {
 }
 
 model Guru {
-  id  Int    @id @default(autoincrement())
-  nip String @unique
+  id           Int      @id @default(autoincrement())
+  nip          String   @unique
+  alamat       String
+  jenisKelamin String
+  tanggalLahir DateTime
+  tempatLahir  String
+  agama        String
+  bidangStudi  String
 
   user   User @relation(fields: [userId], references: [id])
   userId Int  @unique
 
-  nilai     Nilai[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 enum JenisNilai {
+  pr
   tugas
   ulangan
   uts
   uas
 }
 
-enum Semester {
-  genap
-  ganjil
-}
-
 enum MataPelajaran {
   matematika
   bahasa_indonesia
+  bahasa_inggris
   ipa
   ips
   pjok
@@ -103,14 +111,12 @@ model Nilai {
   id            Int           @id @default(autoincrement())
   mataPelajaran MataPelajaran
   nilai         Int
-  semester      Semester
+  semester      Int
   jenisNilai    JenisNilai
   tahunAjaran   String
 
   siswa   Siswa @relation(fields: [siswaId], references: [id])
   siswaId Int
-  guru    Guru  @relation(fields: [guruId], references: [id])
-  guruId  Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
