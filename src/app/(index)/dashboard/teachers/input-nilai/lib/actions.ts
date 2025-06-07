@@ -21,15 +21,15 @@ export async function submitNilai(
   if (!parsed.success) {
     return { error: parsed.error.errors[0].message };
   }
-
+  console.log('Nilai:', parsed.data);
   try {
     await prisma.nilai.create({ data: parsed.data });
-    revalidatePath('/dashboard/teachers/input-nilai');
+    revalidatePath(`/dashboard/teachers/input-nilai/${parsed.data.siswaId}`);
+    return { success: 'Nilai berhasil disimpan.', error: null };
   } catch (error) {
     console.error('Gagal menyimpan nilai.:', error);
     return { error: 'Gagal menyimpan nilai.' };
   }
-  return { success: 'Nilai berhasil disimpan.', error: null };
 }
 
 // export async function updateNilai(

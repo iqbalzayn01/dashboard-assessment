@@ -4,20 +4,20 @@ export type ActionResult = {
 };
 
 export type Tparams = {
-  id: number;
+  id: string;
 };
 
-export type Tedit = {
+export type TypeParams = {
   params: Promise<Tparams>;
 };
 
 export type TuserSession = {
   user?: {
     id: number;
-    name?: string | undefined;
-    email?: string | null;
-    imgUrl?: string | null;
-    role?: string;
+    name?: string | null | undefined;
+    email?: string | null | undefined;
+    imgUrl?: string | null | undefined;
+    role?: string | null | undefined;
   };
 };
 
@@ -25,6 +25,7 @@ export type Tusers = {
   id: number;
   name: string;
   email: string;
+  notelp: string;
   role: string;
   imgUrl?: string | null;
   siswa?: {
@@ -45,4 +46,15 @@ export type Tusers = {
       tahunAjaran: string;
     }[];
   };
+};
+
+export type TNilaiRow = {
+  id: number;
+  nis: string;
+  nama: string;
+  mataPelajaran: string;
+  jenisNilai: string;
+  nilai: number;
+  semester: number;
+  tahunAjaran: string;
 };

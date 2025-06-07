@@ -1,6 +1,5 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
 import { useFormStatus } from 'react-dom';
 import { useActionState } from 'react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -17,10 +16,12 @@ import {
 import { AlertCircle, Loader2, CheckCircle } from 'lucide-react';
 import { submitNilai } from '../lib/actions';
 import { JenisNilai, MataPelajaran } from '@prisma/client';
-import { ActionResult } from '@/types';
+import { ActionResult, Tusers } from '@/types';
+import Link from 'next/link';
+import React from 'react';
 
 interface NilaiFormProps {
-  kelasOptions: string[];
+  data?: Tusers | null;
 }
 
 const initialState: ActionResult = {
@@ -44,35 +45,20 @@ const SubmitButton = () => {
   );
 };
 
-export default function NilaiForm({ kelasOptions }: NilaiFormProps) {
+export default function NilaiForm({ data }: NilaiFormProps) {
   const [state, formAction] = useActionState(submitNilai, initialState);
-  const [selectedKelas, setSelectedKelas] = useState('');
-  const [siswaOptions, setSiswaOptions] = useState<
-    { id: number; name: string; nis: string }[]
-  >([]);
-  const [selectedSiswaId, setSelectedSiswaId] = useState('');
-  const formRef = useRef<HTMLFormElement>(null);
 
-  useEffect(() => {
-    if (selectedKelas) {
-      fetch(`/api/siswa?kelas=${selectedKelas}`)
-        .then((res) => res.json())
-        .then((data) => setSiswaOptions(data));
-    } else {
-      setSiswaOptions([]);
-    }
-  }, [selectedKelas]);
-
-  useEffect(() => {
-    if (state.success && formRef.current) {
-      formRef.current.reset();
-      setSelectedKelas('');
-      setSelectedSiswaId('');
-    }
-  }, [state.success]);
+  if (!data) {
+    return (
+      <Alert variant="destructive">
+        <AlertTitle>Error</AlertTitle>
+        <AlertDescription>Data siswa tidak ditemukan.</AlertDescription>
+      </Alert>
+    );
+  }
 
   return (
-    <form action={formAction} className="grid gap-4" ref={formRef}>
+    <form action={formAction} className="grid gap-4">
       {state.success && (
         <Alert variant="default">
           <AlertTitle className="text-xl text-emerald-400">
@@ -92,47 +78,26 @@ export default function NilaiForm({ kelasOptions }: NilaiFormProps) {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Input type="hidden" name="siswaId" value={data.siswa?.id} />
+
         <div className="space-y-1">
-          <Label htmlFor="kelas">Kelas</Label>
-          <Select
-            value={selectedKelas}
-            onValueChange={(val) => {
-              setSelectedKelas(val);
-              setSelectedSiswaId('');
-            }}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Pilih kelas" />
-            </SelectTrigger>
-            <SelectContent>
-              {kelasOptions.map((kelas) => (
-                <SelectItem key={kelas} value={kelas}>
-                  {kelas}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Label htmlFor="name">Nama Siswa</Label>
+          <Input
+            name="name"
+            placeholder="Nama Siswa"
+            defaultValue={data.name}
+            disabled
+          />
         </div>
 
         <div className="space-y-1">
-          <Label htmlFor="siswaId">Siswa</Label>
-          <Select
-            name="siswaId"
-            value={selectedSiswaId}
-            onValueChange={setSelectedSiswaId}
-            required
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Pilih siswa" />
-            </SelectTrigger>
-            <SelectContent>
-              {siswaOptions.map((s) => (
-                <SelectItem key={s.id} value={s.id.toString()}>
-                  {`(${s.nis}) - ${s.name}`}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Label htmlFor="kelas">Kelas</Label>
+          <Input
+            name="kelas"
+            placeholder="Kelas"
+            defaultValue={data.siswa?.kelas || ''}
+            disabled
+          />
         </div>
 
         <div className="space-y-1">
@@ -195,7 +160,10 @@ export default function NilaiForm({ kelasOptions }: NilaiFormProps) {
           </Select>
         </div>
 
-        <div className="md:col-span-2 flex justify-end">
+        <div className="md:col-span-2 flex justify-end gap-4">
+          <Button variant={'outline'} asChild>
+            <Link href={'/dashboard/teachers/input-nilai'}>Kembali</Link>
+          </Button>
           <SubmitButton />
         </div>
       </div>

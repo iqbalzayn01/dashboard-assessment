@@ -10,6 +10,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Tusers } from '@/types';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export const columns: ColumnDef<Tusers>[] = [
   {
@@ -57,7 +59,7 @@ export const columns: ColumnDef<Tusers>[] = [
       });
 
       return (
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-2">
           <span className="text-sm font-medium">Kelas</span>
           <Select
             onValueChange={(value) => column.setFilterValue(value)}
@@ -91,6 +93,21 @@ export const columns: ColumnDef<Tusers>[] = [
     filterFn: (row, _columnId, filterValue) => {
       if (filterValue === '__all__') return true;
       return row.original.siswa?.kelas === filterValue;
+    },
+  },
+  {
+    id: 'actions',
+    header: 'Aksi',
+    cell: ({ row }) => {
+      const user = row.original;
+
+      return (
+        // <div className="space-x-4 inline-flex float-right">
+        <Button size="sm" asChild>
+          <Link href={`/dashboard/teachers/data-siswa/${user.id}`}>Edit</Link>
+        </Button>
+        // </div>
+      );
     },
   },
 ];

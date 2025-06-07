@@ -10,6 +10,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Tusers } from '@/types';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export const columns: ColumnDef<Tusers>[] = [
   {
@@ -85,20 +87,19 @@ export const columns: ColumnDef<Tusers>[] = [
     },
   },
   {
-    accessorKey: 'nilai',
-    header: 'Nilai',
+    id: 'actions',
+    header: 'Aksi',
     cell: ({ row }) => {
       const user = row.original;
-      const nilaiList = user.siswa?.nilai || [];
+
       return (
-        <div className="flex flex-col gap-1">
-          {nilaiList.map((nilai) => (
-            <div key={nilai.id} className="flex items-center gap-2">
-              <span className="font-medium">{nilai.mataPelajaran}:</span>
-              <span>{nilai.nilai}</span>
-            </div>
-          ))}
-        </div>
+        // <div className="space-x-4 inline-flex float-right">
+        <Button size="sm" asChild>
+          <Link href={`/dashboard/teachers/input-nilai/${user.id}`}>
+            Input Nilai
+          </Link>
+        </Button>
+        // </div>
       );
     },
   },

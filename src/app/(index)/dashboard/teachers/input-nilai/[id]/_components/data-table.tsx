@@ -32,18 +32,18 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { ChevronDown } from 'lucide-react';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@/components/ui/select';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
-
-const globalFilterFn: FilterFn<any> = (row, _columnId, filterValue) => {
-  const data = row.original;
-  return `${data.name} ${data.email} ${data.siswa?.nis} ${data.siswa?.kelas}`
-    .toLowerCase()
-    .includes(filterValue.toLowerCase());
-};
 
 export function DataTable<TData, TValue>({
   columns,
@@ -65,7 +65,6 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    globalFilterFn,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
@@ -79,15 +78,55 @@ export function DataTable<TData, TValue>({
     },
   });
 
+  const filterOptions = {
+    mataPelajaran: Array.from(new Set(data.map((d: any) => d.mataPelajaran))),
+    jenisNilai: Array.from(new Set(data.map((d: any) => d.jenisNilai))),
+    semester: Array.from(new Set(data.map((d: any) => d.semester))),
+    tahunAjaran: Array.from(new Set(data.map((d: any) => d.tahunAjaran))),
+  };
+
   return (
     <div className="w-full">
-      <div className="flex items-center py-4 gap-2">
-        <Input
-          placeholder="Cari NIS, nama, email, atau kelas..."
-          value={globalFilter}
-          onChange={(e) => setGlobalFilter(e.target.value)}
-          className="max-w-sm"
-        />
+      <div className="flex flex-wrap items-center gap-4 py-4">
+        <label htmlFor="filter">Filter</label>
+        {(
+          ['mataPelajaran', 'jenisNilai', 'semester', 'tahunAjaran'] as const
+        ).map((key) => (
+          <Select
+            key={key}
+            onValueChange={(value) =>
+              table
+                .getColumn(key)
+                ?.setFilterValue(value === '__all__' ? undefined : value)
+            }
+            value={
+              (table.getColumn(key)?.getFilterValue() as string) ?? '__all__'
+            }
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder={`Filter ${key}`} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="__all__">
+                Semua{' '}
+                {key
+                  .replace(/([a-z])([A-Z])/g, '$1 $2')
+                  .replace(/\b\w/g, (c) => c.toUpperCase())}
+              </SelectItem>
+              {filterOptions[key].map((item: string | number) => (
+                <SelectItem
+                  key={item}
+                  value={String(item)}
+                  className="capitalize"
+                >
+                  {String(item)
+                    .replace(/_/g, ' ')
+                    .replace(/\b\w/g, (c) => c.toUpperCase())}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        ))}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

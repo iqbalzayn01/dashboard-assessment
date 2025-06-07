@@ -7,10 +7,10 @@ export function mapSessionToUser(session: Session): TuserSession['user'] {
   }
 
   return {
-    id: session.user.id,
+    id: Number.parseInt(session.user.id),
     name: session.user.name ?? undefined,
     email: session.user.email,
-    image: session.user.image ?? '/avatars/shadcn.jpg',
+    imgUrl: session.user.image ?? '/avatars/shadcn.jpg',
     role: session.user.role,
   };
 }

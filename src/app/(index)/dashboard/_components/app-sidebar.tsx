@@ -46,17 +46,20 @@ export function AppSidebar({ dataUser, ...props }: AppSidebarProps) {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <Link href="/" className="flex items-center gap-2">
+            <Link
+              href="/"
+              className="flex flex-col items-center justify-center gap-2"
+            >
               <Image
                 src="/logo-tutwurihandayani.png"
                 alt="Logo"
-                width={80}
-                height={80}
-                className="object-cover"
+                width={100}
+                height={100}
+                className="w-1/2 h-1/2 object-cover"
                 priority={true}
               />
-              <span className="text-xl font-bold">
-                Dashboard Penilaian SD Karadenan 01
+              <span className="text-lg text-center font-bold uppercase">
+                Dashboard Penilaian SDN Karadenan 01
               </span>
             </Link>
           </SidebarMenuItem>
