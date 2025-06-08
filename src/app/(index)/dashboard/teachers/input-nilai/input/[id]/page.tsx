@@ -5,28 +5,42 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { getDataSiswaById, getNilaiSiswaById } from '../lib/data';
+import { Alert, AlertTitle } from '@/components/ui/alert';
+import {
+  getDataUserSiswaById,
+  getDataSiswaById,
+  getNilaiSiswaById,
+} from '../../lib/data';
 import { TypeParams } from '@/types';
 import { DataTable } from './_components/data-table';
 import { columns } from './columns';
-import NilaiForm from '../_components/nilai-form';
+import NilaiForm from '../../_components/nilai-form';
 import Link from 'next/link';
 import React from 'react';
 
+function CAlert() {
+  return (
+    <Alert variant="destructive">
+      <AlertTitle>Data siswa tidak ditemukan.</AlertTitle>
+      <Link href={'/dashboard/teachers/input-nilai'} className="underline">
+        Kembali
+      </Link>
+    </Alert>
+  );
+}
+
 export default async function InputNilaiSiswa({ params }: TypeParams) {
   const getParams = await params;
-  const dataById = await getDataSiswaById(Number.parseInt(getParams.id));
+  const dataUserById = await getDataUserSiswaById(
+    Number.parseInt(getParams.id)
+  );
 
-  if (!dataById) {
-    return (
-      <div className="flex flex-col items-center justify-center h-screen p-4 lg:p-6">
-        <h2>Data siswa tidak ditemukan.</h2>
-        <Link href={'/dashboard/teachers/input-nilai'}>Kembali</Link>
-      </div>
-    );
+  if (!dataUserById) {
+    return <CAlert />;
   }
 
-  const siswaId = dataById?.siswa?.id;
+  const siswaId = dataUserById?.siswa?.id;
+  const dataSiswaById = siswaId ? await getDataSiswaById(siswaId) : null;
   const nilaiSiswaById = siswaId ? await getNilaiSiswaById(siswaId) : [];
 
   return (
@@ -39,7 +53,11 @@ export default async function InputNilaiSiswa({ params }: TypeParams) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <NilaiForm data={dataById} />
+          <NilaiForm
+            type="ADD"
+            dataUser={dataUserById}
+            dataSiswa={dataSiswaById}
+          />
         </CardContent>
       </Card>
 

@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/card';
 import { DataTable } from '../../_components/data-table';
 import { columns } from './columns';
-import { getDataSiswa } from './lib/data';
+import { getDataUserSiswa } from './lib/data';
 
 export const metadata: Metadata = {
   title: 'Input Nilai',
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 export default async function InputNilaiPage() {
-  const dataSiswa = await getDataSiswa();
+  const dataUserSiswa = await getDataUserSiswa();
 
   return (
     <div className="flex flex-col gap-4 p-4">
@@ -28,7 +28,7 @@ export default async function InputNilaiPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <DataTable columns={columns} data={dataSiswa} />
+          <DataTable columns={columns} data={dataUserSiswa} />
         </CardContent>
       </Card>
     </div>

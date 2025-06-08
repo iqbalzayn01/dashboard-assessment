@@ -2,6 +2,8 @@
 
 import { ColumnDef } from '@tanstack/react-table';
 import { TNilaiRow } from '@/types';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export const columns: ColumnDef<TNilaiRow>[] = [
   {
@@ -42,5 +44,23 @@ export const columns: ColumnDef<TNilaiRow>[] = [
     accessorKey: 'nilai',
     header: 'Nilai',
     cell: ({ row }) => <span>{row.original.nilai}</span>,
+  },
+  {
+    id: 'actions',
+    header: 'Aksi',
+    cell: ({ row }) => {
+      const data = row.original;
+      return (
+        // <div className="space-x-4 inline-flex float-right">
+        <Button size="sm" asChild>
+          <Link
+            href={`/dashboard/teachers/input-nilai/input/${data.userId}/edit-nilai/${data.siswaId}/${data.id}`}
+          >
+            Edit
+          </Link>
+        </Button>
+        // </div>
+      );
+    },
   },
 ];

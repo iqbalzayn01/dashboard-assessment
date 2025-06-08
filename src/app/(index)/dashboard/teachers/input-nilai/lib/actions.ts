@@ -21,7 +21,7 @@ export async function submitNilai(
   if (!parsed.success) {
     return { error: parsed.error.errors[0].message };
   }
-  console.log('Nilai:', parsed.data);
+
   try {
     await prisma.nilai.create({ data: parsed.data });
     revalidatePath(`/dashboard/teachers/input-nilai/${parsed.data.siswaId}`);
@@ -32,49 +32,41 @@ export async function submitNilai(
   }
 }
 
-// export async function updateNilai(
-//   _: unknown,
-//   formData: FormData,
-//   id: number
-// ): Promise<ActionResult> {
-//   const session = await auth();
-//   const userId = session?.user?.id;
+export async function updateNilai(
+  _: unknown,
+  formData: FormData
+): Promise<ActionResult> {
+  const parsed = nilaiSchema.safeParse({
+    siswaId: Number(formData.get('siswaId')),
+    mataPelajaran: formData.get('mataPelajaran'),
+    nilai: Number(formData.get('nilai')),
+    semester: Number(formData.get('semester')),
+    jenisNilai: formData.get('jenisNilai'),
+    tahunAjaran: formData.get('tahunAjaran'),
+  });
 
-//   if (!userId) {
-//     return { error: 'Guru tidak ditemukan (unauthenticated).' };
-//   }
+  const nilaiId = Number(formData.get('nilaiId'));
+  const userId = Number(formData.get('userId'));
 
-//   const guru = await prisma.guru.findUnique({
-//     where: { userId: Number(userId) },
-//   });
+  if (!parsed.success) {
+    return { error: parsed.error.errors[0].message };
+  }
 
-//   if (!guru) {
-//     return { error: 'Akun guru tidak valid atau belum terdaftar.' };
-//   }
+  try {
+    await prisma.nilai.update({
+      where: { id: nilaiId },
+      data: parsed.data,
+    });
 
-//   const parsed = nilaiSchema.safeParse({
-//     siswaId: Number(formData.get('siswaId')),
-//     guruId: guru.id,
-//     mataPelajaran: formData.get('mataPelajaran')?.toString(),
-//     nilai: Number(formData.get('nilai')),
-//     semester: formData.get('semester')?.toString(),
-//     jenisNilai: formData.get('jenisNilai')?.toString(),
-//     tahunAjaran: formData.get('tahunAjaran')?.toString(),
-//   });
+    revalidatePath(`/dashboard/teachers/input-nilai/input/${userId}`);
 
-//   if (!parsed.success) {
-//     return { error: parsed.error.errors[0].message };
-//   }
-
-//   try {
-//     await prisma.nilai.update({
-//       where: { id },
-//       data: parsed.data,
-//     });
-//     revalidatePath('/dashboard/teachers/input-nilai');
-//   } catch (error) {
-//     console.log(error);
-//     return { error: 'Gagal memperbarui nilai.' };
-//   }
-//   return redirect('/dashboard/teachers/data-siswa');
-// }
+    return {
+      success: 'Nilai berhasil diperbarui.',
+      error: null,
+      redirectTo: `/dashboard/teachers/input-nilai/input/${userId}`,
+    };
+  } catch (error) {
+    console.error('Gagal memperbarui nilai:', error);
+    return { error: 'Gagal memperbarui nilai.' };
+  }
+}

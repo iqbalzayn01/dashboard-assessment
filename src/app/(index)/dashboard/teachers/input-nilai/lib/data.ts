@@ -1,7 +1,7 @@
-import { Tusers, TNilaiRow } from '@/types';
+import { Tusers, Tsiswa, TNilaiRow } from '@/types';
 import prisma from '../../../../../../../lib/prisma';
 
-export async function getDataSiswa(): Promise<Tusers[]> {
+export async function getDataUserSiswa(): Promise<Tusers[]> {
   try {
     const data = await prisma.user.findMany({
       where: {
@@ -44,7 +44,7 @@ export async function getDataSiswa(): Promise<Tusers[]> {
   }
 }
 
-export async function getDataSiswaById(id: number): Promise<Tusers | null> {
+export async function getDataUserSiswaById(id: number): Promise<Tusers | null> {
   try {
     const data = await prisma.user.findFirst({
       where: { id },
@@ -65,17 +65,6 @@ export async function getDataSiswaById(id: number): Promise<Tusers | null> {
             tanggalLahir: true,
             tempatLahir: true,
             agama: true,
-            nilai: {
-              select: {
-                id: true,
-                mataPelajaran: true,
-                nilai: true,
-                semester: true,
-                jenisNilai: true,
-                tahunAjaran: true,
-              },
-              orderBy: { semester: 'asc' },
-            },
           },
         },
       },
@@ -88,26 +77,41 @@ export async function getDataSiswaById(id: number): Promise<Tusers | null> {
   }
 }
 
-export async function getAllKelas(): Promise<string[]> {
-  const kelasList = await prisma.siswa.findMany({
-    select: { kelas: true },
-    distinct: ['kelas'],
-    orderBy: { kelas: 'asc' },
-  });
-  return kelasList.map((k) => k.kelas);
+export async function getDataSiswaById(id: number): Promise<Tsiswa | null> {
+  try {
+    const data = await prisma.siswa.findFirst({
+      where: { id },
+      select: {
+        id: true,
+        nis: true,
+        kelas: true,
+        alamat: true,
+        jenisKelamin: true,
+        tanggalLahir: true,
+        tempatLahir: true,
+        agama: true,
+        nilai: {
+          select: {
+            id: true,
+            mataPelajaran: true,
+            nilai: true,
+            semester: true,
+            jenisNilai: true,
+            tahunAjaran: true,
+          },
+          orderBy: { semester: 'asc' },
+        },
+      },
+    });
+
+    return data as Tsiswa | null;
+  } catch (error) {
+    console.error('Error fetching data siswa by ID:', error);
+    return null;
+  }
 }
 
-export async function getSiswaByKelas(kelas: string) {
-  return await prisma.siswa.findMany({
-    where: { kelas },
-    include: {
-      user: { select: { name: true } },
-    },
-    orderBy: { nis: 'asc' },
-  });
-}
-
-export async function getNilaiSiswa(): Promise<TNilaiRow[]> {
+export async function getAllNilaiSiswa(): Promise<TNilaiRow[]> {
   try {
     const data = await prisma.nilai.findMany({
       include: {
@@ -126,6 +130,8 @@ export async function getNilaiSiswa(): Promise<TNilaiRow[]> {
 
     return data.map((n) => ({
       id: n.id,
+      userId: n.siswa.userId,
+      siswaId: n.siswa.id,
       nis: n.siswa.nis,
       nama: n.siswa.user.name,
       mataPelajaran: n.mataPelajaran,
@@ -135,7 +141,7 @@ export async function getNilaiSiswa(): Promise<TNilaiRow[]> {
       tahunAjaran: n.tahunAjaran,
     }));
   } catch (error) {
-    console.error('Gagal mengambil data nilai siswa:', error);
+    console.error('Gagal mengambil semua data nilai siswa:', error);
     return [];
   }
 }
@@ -160,6 +166,8 @@ export async function getNilaiSiswaById(id: number): Promise<TNilaiRow[]> {
 
     return data.map((n) => ({
       id: n.id,
+      userId: n.siswa.user.id,
+      siswaId: n.siswa.id,
       nis: n.siswa.nis,
       nama: n.siswa.user.name,
       mataPelajaran: n.mataPelajaran,
@@ -171,5 +179,40 @@ export async function getNilaiSiswaById(id: number): Promise<TNilaiRow[]> {
   } catch (error) {
     console.error('Gagal mengambil data nilai siswa by ID:', error);
     return [];
+  }
+}
+
+export async function getSubNilaiSiswaById(
+  id: number
+): Promise<TNilaiRow | null> {
+  try {
+    const nilai = await prisma.nilai.findUnique({
+      where: { id },
+      include: {
+        siswa: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+
+    if (!nilai) return null;
+
+    return {
+      id: nilai.id,
+      userId: nilai.siswa.user.id,
+      siswaId: nilai.siswa.id,
+      nis: nilai.siswa.nis,
+      nama: nilai.siswa.user.name,
+      mataPelajaran: nilai.mataPelajaran,
+      jenisNilai: nilai.jenisNilai,
+      nilai: nilai.nilai,
+      semester: nilai.semester,
+      tahunAjaran: nilai.tahunAjaran,
+    };
+  } catch (error) {
+    console.error('Gagal mengambil data nilai siswa by ID:', error);
+    return null;
   }
 }

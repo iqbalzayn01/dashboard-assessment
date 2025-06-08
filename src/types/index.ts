@@ -1,10 +1,13 @@
 export type ActionResult = {
   error: string | null;
   success?: string;
+  redirectTo?: string;
 };
 
 export type Tparams = {
   id: string;
+  siswaId?: string;
+  nilaiId?: string;
 };
 
 export type TypeParams = {
@@ -48,8 +51,29 @@ export type Tusers = {
   };
 };
 
+export type Tsiswa = {
+  id: number;
+  nis: string;
+  kelas: string;
+  alamat: string;
+  jenisKelamin: string;
+  tanggalLahir: Date;
+  tempatLahir: string;
+  agama: string;
+  nilai: {
+    id: number;
+    mataPelajaran: string;
+    nilai: number;
+    semester: number;
+    jenisNilai: string;
+    tahunAjaran: string;
+  }[];
+};
+
 export type TNilaiRow = {
   id: number;
+  userId: number;
+  siswaId: number;
   nis: string;
   nama: string;
   mataPelajaran: string;

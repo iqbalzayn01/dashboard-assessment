@@ -90,16 +90,13 @@ export const columns: ColumnDef<Tusers>[] = [
     id: 'actions',
     header: 'Aksi',
     cell: ({ row }) => {
-      const user = row.original;
-
+      const userSiswa = row.original;
       return (
-        // <div className="space-x-4 inline-flex float-right">
         <Button size="sm" asChild>
-          <Link href={`/dashboard/teachers/input-nilai/${user.id}`}>
+          <Link href={`/dashboard/teachers/input-nilai/input/${userSiswa.id}`}>
             Input Nilai
           </Link>
         </Button>
-        // </div>
       );
     },
   },
