@@ -12,7 +12,7 @@ import {
   SortingState,
   ColumnFiltersState,
   VisibilityState,
-  FilterFn,
+  // FilterFn,
 } from '@tanstack/react-table';
 
 import {
@@ -23,7 +23,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -40,12 +39,19 @@ import {
   SelectItem,
 } from '@/components/ui/select';
 
-interface DataTableProps<TData, TValue> {
+interface Filterable {
+  mataPelajaran: string;
+  jenisNilai: string;
+  semester: number;
+  tahunAjaran: string;
+}
+
+interface DataTableProps<TData extends Filterable, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends Filterable, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -56,7 +62,6 @@ export function DataTable<TData, TValue>({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
-  const [globalFilter, setGlobalFilter] = React.useState('');
 
   const table = useReactTable({
     data,
@@ -74,15 +79,16 @@ export function DataTable<TData, TValue>({
       columnFilters,
       columnVisibility,
       rowSelection,
-      globalFilter,
     },
   });
 
+  const castedData = data as Filterable[];
+
   const filterOptions = {
-    mataPelajaran: Array.from(new Set(data.map((d: any) => d.mataPelajaran))),
-    jenisNilai: Array.from(new Set(data.map((d: any) => d.jenisNilai))),
-    semester: Array.from(new Set(data.map((d: any) => d.semester))),
-    tahunAjaran: Array.from(new Set(data.map((d: any) => d.tahunAjaran))),
+    mataPelajaran: Array.from(new Set(castedData.map((d) => d.mataPelajaran))),
+    jenisNilai: Array.from(new Set(castedData.map((d) => d.jenisNilai))),
+    semester: Array.from(new Set(castedData.map((d) => d.semester))),
+    tahunAjaran: Array.from(new Set(castedData.map((d) => d.tahunAjaran))),
   };
 
   return (

@@ -3,12 +3,20 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
-import { TuserSession } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
 
 interface HeaderProps {
-  session: TuserSession['user'];
+  session:
+    | {
+        id: string;
+        name?: string | null;
+        email?: string | null;
+        imgUrl?: string | null;
+        role?: string | null;
+        emailVerified?: Date | null;
+      }
+    | undefined;
 }
 
 const navItems = [{ label: 'Home', href: '/' }];

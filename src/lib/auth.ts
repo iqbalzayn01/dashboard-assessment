@@ -54,7 +54,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           if (!isPasswordValid) throw new Error('Invalid credentials');
 
           const {
-            password: _,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            password: _password,
             id,
             role,
             imgUrl,
@@ -87,9 +88,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;
-        token.role = (user as any).role;
-        token.imgUrl = (user as any).imgUrl ?? null;
-        token.emailVerified = (user as any).emailVerified ?? null;
+        token.role = (user as { role?: string }).role;
+        token.imgUrl = (user as { imgUrl?: string }).imgUrl ?? null;
+        token.emailVerified =
+          (user as { emailVerified?: string }).emailVerified ?? null;
       }
       return token;
     },

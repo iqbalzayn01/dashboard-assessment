@@ -12,7 +12,6 @@ import {
   SortingState,
   ColumnFiltersState,
   VisibilityState,
-  FilterFn,
 } from '@tanstack/react-table';
 
 import {
@@ -38,9 +37,22 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-const globalFilterFn: FilterFn<any> = (row, _columnId, filterValue) => {
-  const data = row.original;
-  return `${data.name} ${data.email} ${data.siswa?.nis} ${data.siswa?.kelas}`
+const globalFilterFn = <
+  TData extends {
+    name?: string;
+    email?: string;
+    siswa?: { nis?: string; kelas?: string };
+  }
+>(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  row: any,
+  _columnId: string,
+  filterValue: string
+) => {
+  const data = row.original as TData;
+  return `${data.name ?? ''} ${data.email ?? ''} ${data.siswa?.nis ?? ''} ${
+    data.siswa?.kelas ?? ''
+  }`
     .toLowerCase()
     .includes(filterValue.toLowerCase());
 };

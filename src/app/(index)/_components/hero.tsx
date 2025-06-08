@@ -3,8 +3,6 @@ import React from 'react';
 import Link from 'next/link';
 
 export default function HeroSection() {
-  const currentYear = new Date().getFullYear();
-
   return (
     <section className="relative w-full h-screen flex items-center justify-center px-6 py-20 overflow-hidden">
       <div className="relative z-10 max-w-4xl text-center">

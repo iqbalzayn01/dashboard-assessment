@@ -1,15 +1,7 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { JenisNilai, MataPelajaran } from '@prisma/client';
 import { TNilaiRow } from '@/types';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 
 export const columns: ColumnDef<TNilaiRow>[] = [
   {
