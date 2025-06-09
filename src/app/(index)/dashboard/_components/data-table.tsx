@@ -31,36 +31,23 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { ChevronDown } from 'lucide-react';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@/components/ui/select';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-const globalFilterFn = <
-  TData extends {
-    name?: string;
-    email?: string;
-    siswa?: { nis?: string; kelas?: string };
-  }
->(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  row: any,
-  _columnId: string,
-  filterValue: string
-) => {
-  const data = row.original as TData;
-  return `${data.name ?? ''} ${data.email ?? ''} ${data.siswa?.nis ?? ''} ${
-    data.siswa?.kelas ?? ''
-  }`
-    .toLowerCase()
-    .includes(filterValue.toLowerCase());
-};
-
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
+export function DataTable<
+  TData extends { siswa?: { kelas?: string } },
+  TValue
+>({ columns, data }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -77,7 +64,6 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    globalFilterFn,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
@@ -91,15 +77,47 @@ export function DataTable<TData, TValue>({
     },
   });
 
+  const uniqueKelas = React.useMemo(() => {
+    const set = new Set<string>();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data.forEach((d: any) => {
+      if (d.siswa?.kelas) set.add(d.siswa.kelas);
+    });
+    return Array.from(set).sort();
+  }, [JSON.stringify(data)]);
+
   return (
     <div className="w-full">
-      <div className="flex items-center py-4 gap-2">
+      <div className="flex flex-wrap items-center gap-2 py-4">
         <Input
           placeholder="Cari NIS, nama, email, atau kelas..."
           value={globalFilter}
           onChange={(e) => setGlobalFilter(e.target.value)}
           className="max-w-sm"
         />
+
+        <Select
+          value={
+            (table.getColumn('kelas')?.getFilterValue() as string) ?? '__all__'
+          }
+          onValueChange={(value) =>
+            table
+              .getColumn('kelas')
+              ?.setFilterValue(value === '__all__' ? undefined : value)
+          }
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Filter Kelas" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="__all__">Semua Kelas</SelectItem>
+            {uniqueKelas.map((kelas) => (
+              <SelectItem key={kelas} value={kelas} className="capitalize">
+                {kelas}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -192,7 +210,6 @@ export function DataTable<TData, TValue>({
             size="sm"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
-            className="cursor-pointer"
           >
             Sebelumnya
           </Button>
@@ -201,7 +218,6 @@ export function DataTable<TData, TValue>({
             size="sm"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
-            className="cursor-pointer"
           >
             Selanjutnya
           </Button>

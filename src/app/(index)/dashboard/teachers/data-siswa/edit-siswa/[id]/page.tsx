@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { getDataSiswaById } from '../../lib/data';
+import { getDataUserSiswaById } from '../../lib/data';
 import { TypeParams } from '@/types';
 import SiswaForm from '../../_components/siswa-form';
 import Link from 'next/link';
@@ -13,7 +13,7 @@ import React from 'react';
 
 export default async function EditSiswaPage({ params }: TypeParams) {
   const getParams = await params;
-  const data = await getDataSiswaById(Number(getParams.id));
+  const data = await getDataUserSiswaById(Number(getParams.id));
 
   if (!data) {
     return (

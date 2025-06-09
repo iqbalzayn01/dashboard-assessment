@@ -39,7 +39,7 @@ export async function getDataUserSiswa(): Promise<Tusers[]> {
   }
 }
 
-export async function getDataSiswaById(id: number): Promise<Tusers | null> {
+export async function getDataUserSiswaById(id: number): Promise<Tusers | null> {
   try {
     const data = await prisma.user.findFirst({
       where: { id, role: 'siswa' },
