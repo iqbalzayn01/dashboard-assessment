@@ -7,12 +7,12 @@ import {
 } from '@/components/ui/card';
 import { DataTable } from '../../_components/data-table';
 import { columns } from './columns';
-import { getDataSiswa } from './lib/data';
+import { getDataUserSiswa } from './lib/data';
 
 import React from 'react';
 
 export default async function DataSiswa() {
-  const dataSiswa = await getDataSiswa();
+  const dataSiswa = await getDataUserSiswa();
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4">

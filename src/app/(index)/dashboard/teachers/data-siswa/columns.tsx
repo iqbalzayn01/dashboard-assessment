@@ -11,9 +11,29 @@ import {
 } from '@/components/ui/select';
 import { Tusers } from '@/types';
 import { Button } from '@/components/ui/button';
+import Image from 'next/image';
 import Link from 'next/link';
 
 export const columns: ColumnDef<Tusers>[] = [
+  {
+    accessorKey: 'imgUrl',
+    header: 'Foto',
+    cell: ({ row }) => {
+      const user = row.original;
+      return (
+        <div>
+          <Image
+            src={'/default-avatar.png'}
+            alt={user.name}
+            width={50}
+            height={50}
+            className="aspect-square object-cover size-1/2"
+            priority={true}
+          />
+        </div>
+      );
+    },
+  },
   {
     accessorKey: 'nis',
     header: 'NIS',
@@ -104,7 +124,9 @@ export const columns: ColumnDef<Tusers>[] = [
       return (
         // <div className="space-x-4 inline-flex float-right">
         <Button size="sm" asChild>
-          <Link href={`/dashboard/teachers/data-siswa/${user.id}`}>Edit</Link>
+          <Link href={`/dashboard/teachers/data-siswa/edit-siswa/${user.id}`}>
+            Edit
+          </Link>
         </Button>
         // </div>
       );
