@@ -70,3 +70,31 @@ export async function updateNilai(
     return { error: 'Gagal memperbarui nilai.' };
   }
 }
+
+export async function deleteSubNilaiSiswa(id: number): Promise<ActionResult> {
+  const dataSubNilai = await prisma.nilai.findUnique({
+    where: {
+      id: id,
+    },
+  });
+
+  if (!dataSubNilai) {
+    return {
+      error: 'Nilai tidak ditemukan',
+    };
+  }
+
+  try {
+    await prisma.nilai.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    return { success: 'Nilai berhasil dihapus.', error: null };
+  } catch (error) {
+    console.error(error);
+    console.error('Gagal menghapus nilai:', error);
+    return { error: 'Gagal menghapus nilai.' };
+  }
+}

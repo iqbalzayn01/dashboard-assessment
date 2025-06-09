@@ -3,6 +3,7 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { TNilaiRow } from '@/types';
 import { Button } from '@/components/ui/button';
+import FormDelete from '../../_components/delete-nilai-form';
 import Link from 'next/link';
 
 export const columns: ColumnDef<TNilaiRow>[] = [
@@ -51,15 +52,16 @@ export const columns: ColumnDef<TNilaiRow>[] = [
     cell: ({ row }) => {
       const data = row.original;
       return (
-        // <div className="space-x-4 inline-flex float-right">
-        <Button size="sm" asChild>
-          <Link
-            href={`/dashboard/teachers/input-nilai/input/${data.userId}/edit-nilai/${data.siswaId}/${data.id}`}
-          >
-            Edit
-          </Link>
-        </Button>
-        // </div>
+        <div className="space-x-4 inline-flex">
+          <Button size="sm" asChild>
+            <Link
+              href={`/dashboard/teachers/input-nilai/input/${data.userId}/edit-nilai/${data.siswaId}/${data.id}`}
+            >
+              Edit
+            </Link>
+          </Button>
+          <FormDelete id={data.id} />
+        </div>
       );
     },
   },
