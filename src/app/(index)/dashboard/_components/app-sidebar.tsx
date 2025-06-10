@@ -56,12 +56,12 @@ export function AppSidebar({ dataUser, role, ...props }: AppSidebarProps) {
           },
           {
             title: 'Data Diri',
-            url: '/dashboard/students/data-diri',
+            url: `/dashboard/students/data-diri/${dataUser?.id ?? ''}`,
             icon: UserIcon,
           },
           {
             title: 'Data Nilai',
-            url: '/dashboard/students/data-nilai',
+            url: `/dashboard/students/data-nilai/${dataUser?.id ?? ''}`,
             icon: BookOpen,
           },
         ]
