@@ -33,6 +33,7 @@ export type Tusers = {
   imgUrl?: string | null;
   siswa?: {
     id: number;
+    userId: number;
     nis: string;
     kelas: string;
     alamat: string;

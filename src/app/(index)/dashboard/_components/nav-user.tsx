@@ -103,10 +103,6 @@ export function NavUser({ user }: NavUserProps) {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            {/* <DropdownMenuItem>
-              <LogOutIcon />
-              Log out
-            </DropdownMenuItem> */}
             {state.error && (
               <DropdownMenuItem>
                 <Alert variant="destructive">

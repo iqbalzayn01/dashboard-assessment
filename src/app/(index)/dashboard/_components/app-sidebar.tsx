@@ -1,6 +1,12 @@
 'use client';
 
-import { LayoutDashboardIcon, ListIcon, UsersIcon } from 'lucide-react';
+import {
+  LayoutDashboardIcon,
+  ListIcon,
+  UsersIcon,
+  UserIcon,
+  BookOpen,
+} from 'lucide-react';
 import { NavMain } from './nav-main';
 import { NavUser } from './nav-user';
 import {
@@ -16,31 +22,59 @@ import Link from 'next/link';
 import Image from 'next/image';
 import * as React from 'react';
 
-const data = {
-  navMain: [
-    {
-      title: 'Dashboard',
-      url: '/dashboard/teachers',
-      icon: LayoutDashboardIcon,
-    },
-    {
-      title: 'Data Siswa',
-      url: '/dashboard/teachers/data-siswa',
-      icon: UsersIcon,
-    },
-    {
-      title: 'Input Nilai',
-      url: '/dashboard/teachers/input-nilai',
-      icon: ListIcon,
-    },
-  ],
-};
-
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   dataUser: TuserSession['user'];
+  role?: string;
 }
 
-export function AppSidebar({ dataUser, ...props }: AppSidebarProps) {
+export function AppSidebar({ dataUser, role, ...props }: AppSidebarProps) {
+  const navMain =
+    role === 'guru'
+      ? [
+          {
+            title: 'Dashboard',
+            url: '/dashboard/teachers',
+            icon: LayoutDashboardIcon,
+          },
+          {
+            title: 'Data Siswa',
+            url: '/dashboard/teachers/data-siswa',
+            icon: UsersIcon,
+          },
+          {
+            title: 'Input Nilai',
+            url: '/dashboard/teachers/input-nilai',
+            icon: ListIcon,
+          },
+        ]
+      : role === 'siswa'
+      ? [
+          {
+            title: 'Dashboard',
+            url: '/dashboard/students',
+            icon: LayoutDashboardIcon,
+          },
+          {
+            title: 'Data Diri',
+            url: '/dashboard/students/data-diri',
+            icon: UserIcon,
+          },
+          {
+            title: 'Data Nilai',
+            url: '/dashboard/students/data-nilai',
+            icon: BookOpen,
+          },
+        ]
+      : role === 'orangtua'
+      ? [
+          {
+            title: 'Data Nilai Siswa',
+            url: '/dashboard/parents/nilai-anak',
+            icon: BookOpen,
+          },
+        ]
+      : [];
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -66,7 +100,7 @@ export function AppSidebar({ dataUser, ...props }: AppSidebarProps) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={navMain} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={dataUser} />
