@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { AlertCircle, CheckCircle, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import UploadImages from './upload-images';
 import Link from 'next/link';
 
 interface SiswaFormProps {
@@ -71,6 +72,8 @@ export default function SiswaForm({ data }: SiswaFormProps) {
       <Input type="hidden" name="siswaId" value={data.siswa?.id} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <UploadImages />
+
         <div className="space-y-1">
           <Label>Nama</Label>
           <Input name="name" defaultValue={data.name} required />

@@ -15,7 +15,7 @@ import { ActionResult } from '@/types';
 import React, { useActionState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { useFormStatus } from 'react-dom';
-import { signInAction } from '../lib/actions';
+import { signInAction } from '../../lib/actions';
 import Link from 'next/link';
 
 const initialState: ActionResult = {
@@ -29,10 +29,10 @@ function SubmitButton() {
       {pending ? (
         <>
           <Loader2 className="animate-spin" />
-          Please wait
+          Mohon tunggu
         </>
       ) : (
-        'Sign In'
+        'Masuk'
       )}
     </Button>
   );
@@ -48,9 +48,9 @@ export default function SignInForm({
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl text-center">Sign In</CardTitle>
+          <CardTitle className="text-2xl text-center">Masuk</CardTitle>
           <CardDescription className="text-center">
-            Enter your email below to login to your account
+            Masukkan email Anda di bawah ini untuk masuk ke akun Anda
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -84,9 +84,9 @@ export default function SignInForm({
               <SubmitButton />
             </div>
             <div className="mt-4 text-center text-sm">
-              Don&apos;t have an account?{' '}
+              Daftar sebagai orang tua siswa?
               <Link href="/sign-up" className="underline underline-offset-4">
-                Sign up
+                Daftar di sini
               </Link>
             </div>
             <div className="mt-4 text-center text-sm">
@@ -94,7 +94,7 @@ export default function SignInForm({
                 href="/"
                 className="text-sm text-center text-muted-foreground hover:text-primary hover:underline underline-offset-4"
               >
-                Back
+                Kembali ke beranda
               </Link>
             </div>
           </form>

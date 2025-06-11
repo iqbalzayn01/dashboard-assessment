@@ -56,12 +56,12 @@ export default async function DataDiri({ params }: TypeParams) {
         <CardContent>
           <div className="flex flex-col md:flex-row items-start gap-4">
             <Image
-              src={'/shadcn-avatar.png'}
+              src={data.imgUrl ?? '/placeholder.png'}
               alt={data.name}
-              width={50}
-              height={50}
+              width={400}
+              height={400}
               priority={true}
-              className="aspect-auto w-1/3 h-1/3 object-cover"
+              className="aspect-auto w-1/4 h-1/4 object-cover"
             />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-1">

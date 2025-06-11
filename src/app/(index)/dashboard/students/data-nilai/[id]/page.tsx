@@ -9,7 +9,7 @@ import {
 import { Alert, AlertTitle } from '@/components/ui/alert';
 import { TypeParams } from '@/types';
 import { getDataUserSiswaById, getNilaiSiswaById } from '../../lib/data';
-import { DataTable } from './_components/data-table';
+import { DataTableNilai } from '../../../_components/data-table-nilai';
 import { columns } from './columns';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -47,7 +47,7 @@ export default async function DataNilai({ params }: TypeParams) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <DataTable columns={columns} data={nilaiSiswaById} />
+          <DataTableNilai columns={columns} data={nilaiSiswaById} />
         </CardContent>
         <CardFooter>
           <Button asChild>

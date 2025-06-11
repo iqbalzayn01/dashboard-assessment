@@ -51,7 +51,7 @@ interface DataTableProps<TData extends Filterable, TValue> {
   data: TData[];
 }
 
-export function DataTable<TData extends Filterable, TValue>({
+export function DataTableNilai<TData extends Filterable, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {

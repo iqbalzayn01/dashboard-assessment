@@ -69,7 +69,7 @@ export function AppSidebar({ dataUser, role, ...props }: AppSidebarProps) {
       ? [
           {
             title: 'Data Nilai Siswa',
-            url: '/dashboard/parents/nilai-anak',
+            url: '/dashboard/parents',
             icon: BookOpen,
           },
         ]

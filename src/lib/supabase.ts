@@ -17,12 +17,22 @@ export const uploadFile = async (file: File, path: 'student-assessment') => {
   const fileType = file.type.split('/')[1];
   const filename = `${path}-${Date.now()}.${fileType}`;
 
-  await supabase.storage
+  if (!['jpeg', 'jpg', 'png', 'webp'].includes(fileType)) {
+    throw new Error('Format gambar tidak didukung');
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    throw new Error('Ukuran file terlalu besar');
+  }
+
+  const { error } = await supabase.storage
     .from('student-assessment')
     .upload(`public/images/${path}/${filename}`, file, {
       cacheControl: '3600',
       upsert: false,
     });
+
+  if (error) throw error;
 
   return filename;
 };

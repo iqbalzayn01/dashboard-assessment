@@ -35,6 +35,15 @@ export const signInSchema = z.object({
   password: z.string().min(6),
 });
 
+export const parentSchema = z.object({
+  name: z.string().min(1, 'Nama wajib diisi'),
+  email: z.string().email('Email tidak valid'),
+  notelp: z.string().min(5, 'No. telepon wajib diisi'),
+  password: z.string().min(6, 'Minimal 6 karakter'),
+  confirmPassword: z.string(),
+  nis: z.string().min(1, 'NIS wajib diisi'),
+});
+
 export const userSchema = z.object({
   name: z.string().min(1),
   email: z.string().email(),
