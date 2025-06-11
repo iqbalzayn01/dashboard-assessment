@@ -19,6 +19,7 @@ import { useRouter } from 'next/navigation';
 import { registerOrangTua } from '../../lib/actions';
 import { useActionState } from 'react';
 import type { ActionResult } from '@/types';
+import { BorderBeam } from '@/components/magicui/border-beam';
 
 const initialState: ActionResult = {
   error: '',
@@ -57,7 +58,7 @@ export default function ParentSignUpForm({
 
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
-      <Card>
+      <Card className="relative w-[350px] overflow-hidden">
         <CardHeader>
           <CardTitle className="text-2xl text-center">
             Daftar Sebagai Orang Tua
@@ -160,6 +161,7 @@ export default function ParentSignUpForm({
             </div>
           </form>
         </CardContent>
+        <BorderBeam duration={20} size={200} />
       </Card>
     </div>
   );

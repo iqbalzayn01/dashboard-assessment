@@ -16,6 +16,7 @@ import React, { useActionState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { useFormStatus } from 'react-dom';
 import { signInAction } from '../../lib/actions';
+import { BorderBeam } from '@/components/magicui/border-beam';
 import Link from 'next/link';
 
 const initialState: ActionResult = {
@@ -46,7 +47,7 @@ export default function SignInForm({
 
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
-      <Card>
+      <Card className="relative w-[350px] overflow-hidden">
         <CardHeader>
           <CardTitle className="text-2xl text-center">Masuk</CardTitle>
           <CardDescription className="text-center">
@@ -99,6 +100,7 @@ export default function SignInForm({
             </div>
           </form>
         </CardContent>
+        <BorderBeam duration={8} size={100} />
       </Card>
     </div>
   );

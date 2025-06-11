@@ -19,7 +19,11 @@ interface HeaderProps {
     | undefined;
 }
 
-const navItems = [{ label: 'Home', href: '/' }];
+const navItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Tentang', href: '#' },
+  { label: 'Kontak', href: '#' },
+];
 
 export function Header({ session }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -27,78 +31,88 @@ export function Header({ session }: HeaderProps) {
   const closeMenu = () => setMenuOpen(false);
 
   const isAuthenticated = !!session;
+  const authNav = isAuthenticated
+    ? { label: 'Dashboard', href: '/dashboard' }
+    : { label: 'Sign In', href: '/sign-in' };
 
   return (
-    <header className="w-full px-6 py-4 flex justify-between items-center shadow-sm sticky top-0 bg-white z-50">
-      <Link className="flex items-center gap-2" href={'/'}>
-        <Image
-          src="/logo-tutwurihandayani.png"
-          alt="Logo"
-          width={100}
-          height={100}
-          className="w-1/8 h-1/8 object-cover"
-          priority={true}
-        />
-        <h1 className="text-2xl font-bold text-blue-400">
-          SD Negeri Karadenan 01
-        </h1>
-      </Link>
+    <header className="sticky top-0 z-50 w-full bg-white/70 backdrop-blur-lg border-b">
+      <div className="container mx-auto flex items-center justify-between px-4 py-3 md:py-4">
+        {/* Logo & Title */}
+        <Link href="/" className="flex items-center gap-3">
+          <Image
+            src="/logo-tutwurihandayani.png"
+            alt="Logo"
+            width={50}
+            height={50}
+            className="w-10 h-10 object-contain"
+            priority
+          />
+          <h1 className="text-sm font-bold text-blue-500 uppercase tracking-wide">
+            SDN Karadenan 01
+          </h1>
+        </Link>
 
-      <div className="md:hidden">
-        <Button
-          onClick={toggleMenu}
-          aria-label="Toggle Menu"
-          variant={'outline'}
-          size="icon"
-        >
-          {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </Button>
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex gap-6 text-sm font-medium items-center">
+          {navItems.map(({ label, href }) => (
+            <Link
+              key={label}
+              href={href}
+              className="hover:text-blue-500 transition-colors"
+            >
+              {label}
+            </Link>
+          ))}
+          <Link href={authNav.href} className="text-blue-500 font-semibold">
+            {authNav.label}
+          </Link>
+        </nav>
+
+        {/* Mobile Menu Button */}
+        <div className="md:hidden">
+          <Button
+            onClick={toggleMenu}
+            aria-label="Toggle Menu"
+            variant="outline"
+            size="icon"
+            className="border-none"
+          >
+            {menuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
+          </Button>
+        </div>
       </div>
 
-      <nav className="hidden md:flex gap-6 text-sm font-medium items-center">
-        {navItems.map(({ label, href }) => (
-          <Link
-            key={label}
-            href={href}
-            className="hover:text-blue-400 transition-colors"
-          >
-            {label}
-          </Link>
-        ))}
-        {isAuthenticated ? (
-          <Link href="/sign-in" className="text-blue-400">
-            Dashboard
-          </Link>
-        ) : (
-          <Link href="/sign-in" className="text-blue-400">
-            Sign In
-          </Link>
-        )}
-      </nav>
-
-      {menuOpen && (
-        <div className="absolute top-16 left-0 w-full bg-white border-t shadow-md flex flex-col items-center py-4 space-y-4 md:hidden">
+      {/* Mobile Nav Menu */}
+      <div
+        className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden bg-white shadow-md ${
+          menuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="flex flex-col items-center gap-4 py-4 text-sm font-medium">
           {navItems.map(({ label, href }) => (
             <Link
               key={label}
               href={href}
               onClick={closeMenu}
-              className="hover:text-blue-400 transition-colors"
+              className="hover:text-blue-500 transition-colors"
             >
               {label}
             </Link>
           ))}
-          {isAuthenticated ? (
-            <Link href="/sign-in" className="text-blue-400">
-              Dashboard
-            </Link>
-          ) : (
-            <Link href="/sign-in" className="text-blue-400">
-              Sign In
-            </Link>
-          )}
+          <Link
+            href={authNav.href}
+            onClick={closeMenu}
+            className="text-blue-500 font-semibold"
+          >
+            {authNav.label}
+          </Link>
         </div>
-      )}
+      </div>
     </header>
   );
 }
