@@ -29,7 +29,7 @@ const programs = [
 export default function ProgramUnggulanSection() {
   return (
     <section
-      className="flex flex-col w-full h-[900px] bg-white items-center justify-center px-5 py-20"
+      className="flex flex-col w-full bg-white items-center justify-center px-5 py-40"
       id="program"
     >
       <div className="container mx-auto px-4 text-center">

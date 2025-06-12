@@ -3,7 +3,7 @@ import React from 'react';
 
 export default function AboutUsSection() {
   return (
-    <section className="container mx-auto flex flex-col w-full h-[900px] items-center justify-center px-5 py-20">
+    <section className="container mx-auto flex flex-col w-full items-center justify-center px-5 py-40">
       <div className="flex flex-col-reverse lg:flex-row items-center justify-center gap-10">
         <Image
           src={'/img-aboutus.png'}
@@ -13,7 +13,7 @@ export default function AboutUsSection() {
           priority={true}
           className="object-cover"
         />
-        <div className="w-[60%]">
+        <div className="w-full lg:w-[60%]">
           <h2 className="text-2xl md:text-4xl text-blue-500 font-bold mb-4">
             Tentang SD Negeri Karadenan 01
           </h2>
