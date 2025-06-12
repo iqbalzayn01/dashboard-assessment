@@ -1,6 +1,13 @@
 'use client';
 
 import { cn } from '@/lib/utils';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -16,7 +23,7 @@ import Link from 'next/link';
 import React, { useEffect } from 'react';
 import { useFormStatus } from 'react-dom';
 import { useRouter } from 'next/navigation';
-import { registerOrangTua } from '../../lib/actions';
+import { registerGuru } from '../../lib/actions';
 import { useActionState } from 'react';
 import type { ActionResult } from '@/types';
 import { BorderBeam } from '@/components/magicui/border-beam';
@@ -43,11 +50,11 @@ function SubmitButton() {
   );
 }
 
-export default function ParentSignUpForm({
+export default function TeacherRegisterForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<'div'>) {
-  const [state, formAction] = useActionState(registerOrangTua, initialState);
+  const [state, formAction] = useActionState(registerGuru, initialState);
   const router = useRouter();
 
   useEffect(() => {
@@ -61,10 +68,10 @@ export default function ParentSignUpForm({
       <Card className="relative overflow-hidden">
         <CardHeader>
           <CardTitle className="text-2xl text-center">
-            Daftar Sebagai Orang Tua
+            Daftar Sebagai Guru
           </CardTitle>
           <CardDescription className="text-center">
-            Masukkan data Anda dan NIS anak Anda untuk membuat akun
+            Masukkan data diri Anda untuk membuat akun sebagai guru
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -121,12 +128,80 @@ export default function ParentSignUpForm({
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="nis">NIS Anak</Label>
+                <Label htmlFor="nip">NIP</Label>
                 <Input
-                  name="nis"
-                  id="nis"
+                  name="nip"
+                  id="nip"
                   type="text"
-                  placeholder="Masukkan NIS anak"
+                  placeholder="Masukkan NIP"
+                  required
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="alamat">Alamat</Label>
+                <Input
+                  name="alamat"
+                  id="alamat"
+                  type="text"
+                  placeholder="Alamat lengkap"
+                  required
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="jenisKelamin">Jenis Kelamin</Label>
+                <Select name="jenisKelamin" required>
+                  <SelectTrigger id="jenisKelamin" className="w-full">
+                    <SelectValue placeholder="Pilih jenis kelamin" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Laki-Laki">Laki-Laki</SelectItem>
+                    <SelectItem value="Perempuan">Perempuan</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="grid gap-2">
+                <Label htmlFor="tanggalLahir">Tanggal Lahir</Label>
+                <Input
+                  name="tanggalLahir"
+                  id="tanggalLahir"
+                  type="date"
+                  required
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="tempatLahir">Tempat Lahir</Label>
+                <Input
+                  name="tempatLahir"
+                  id="tempatLahir"
+                  type="text"
+                  required
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="agama">Agama</Label>
+                <Select name="agama" required>
+                  <SelectTrigger id="agama" className="w-full">
+                    <SelectValue placeholder="Pilih agama" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Islam">Islam</SelectItem>
+                    <SelectItem value="Kristen">Kristen</SelectItem>
+                    <SelectItem value="Katolik">Katolik</SelectItem>
+                    <SelectItem value="Hindu">Hindu</SelectItem>
+                    <SelectItem value="Buddha">Buddha</SelectItem>
+                    <SelectItem value="Konghucu">Konghucu</SelectItem>
+                    <SelectItem value="Lainnya">Lainnya</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="grid gap-2">
+                <Label htmlFor="bidangStudi">Bidang Studi</Label>
+                <Input
+                  name="bidangStudi"
+                  id="bidangStudi"
+                  type="text"
                   required
                 />
               </div>

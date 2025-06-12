@@ -19,7 +19,7 @@ export const mataPelajaranEnum = z.enum([
 ]);
 export type MataPelajaran = z.infer<typeof mataPelajaranEnum>;
 
-export const jenisKelaminEnum = z.enum(['Laki-laki', 'Perempuan']);
+export const jenisKelaminEnum = z.enum(['Laki-Laki', 'Perempuan']);
 export const agamaEnum = z.enum([
   'Islam',
   'Kristen',
@@ -74,6 +74,26 @@ export const guruSchema = z.object({
   agama: agamaEnum,
   bidangStudi: z.string(),
 });
+
+export const registerGuruSchema = z
+  .object({
+    name: z.string().min(1),
+    email: z.string().email(),
+    notelp: z.string().min(8),
+    password: z.string().min(6),
+    confirmPassword: z.string(),
+  })
+  .merge(
+    z.object({
+      nip: z.string().min(1),
+      alamat: z.string(),
+      jenisKelamin: jenisKelaminEnum,
+      tanggalLahir: z.string(),
+      tempatLahir: z.string(),
+      agama: agamaEnum,
+      bidangStudi: z.string(),
+    })
+  );
 
 export const nilaiSchema = z.object({
   siswaId: z.number(),

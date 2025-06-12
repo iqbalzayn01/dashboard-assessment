@@ -1,54 +1,60 @@
-import React, { ChangeEvent, useRef } from 'react';
+'use client';
+
+import React, { ChangeEvent, useRef, useState } from 'react';
 import { Upload } from 'lucide-react';
+import { Label } from '@/components/ui/label';
 import Image from 'next/image';
 
-export default function UploadImages() {
-  const ref = useRef<HTMLInputElement>(null);
-  const thumbnailRef = useRef<HTMLImageElement>(null);
+interface UploadImagesProps {
+  initialImageUrl?: string;
+}
 
-  const openFolder = () => {
-    if (ref.current) {
-      ref.current.click();
+export default function UploadImages({ initialImageUrl }: UploadImagesProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [previewUrl, setPreviewUrl] = useState(
+    initialImageUrl || '/design/placeholder.svg'
+  );
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
     }
   };
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (!thumbnailRef.current) {
-      return;
-    }
-
-    if (e.target.files && e.target.files.length > 0) {
-      thumbnailRef.current.src = URL.createObjectURL(e.target.files[0]);
-    }
+  const handleClick = () => {
+    fileInputRef.current?.click();
   };
 
   return (
     <div className="grid w-1/2 items-center gap-2">
+      <Label>Unggah Foto</Label>
       <Image
-        alt="Product image"
+        alt="Foto siswa"
         className="aspect-square size-full rounded-md object-cover"
-        height="300"
-        src="/design/placeholder.svg"
-        width="300"
-        ref={thumbnailRef}
+        height={300}
+        width={300}
+        src={previewUrl}
+        priority
       />
+
       <div className="space-y-1">
         <button
           type="button"
-          onClick={openFolder}
+          onClick={handleClick}
           className="flex aspect-square size-1/4 items-center justify-center rounded-md border border-dashed"
         >
           <Upload className="h-4 w-4 text-muted-foreground" />
           <span className="sr-only">Upload</span>
         </button>
         <input
-          ref={ref}
-          onChange={onChange}
+          ref={fileInputRef}
+          onChange={handleImageChange}
           type="file"
           name="imgUrl"
           className="hidden"
-          accept="images/*"
-          multiple
+          accept="image/*"
         />
       </div>
     </div>

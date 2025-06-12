@@ -47,7 +47,7 @@ export default function SignInForm({
 
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
-      <Card className="relative w-[350px] overflow-hidden">
+      <Card className="relative overflow-hidden">
         <CardHeader>
           <CardTitle className="text-2xl text-center">Masuk</CardTitle>
           <CardDescription className="text-center">

@@ -38,16 +38,18 @@ import {
   SelectContent,
   SelectItem,
 } from '@/components/ui/select';
+import Link from 'next/link';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  hideAddButton?: boolean;
 }
 
 export function DataTable<
   TData extends { siswa?: { kelas?: string } },
   TValue
->({ columns, data }: DataTableProps<TData, TValue>) {
+>({ columns, data, hideAddButton }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -141,6 +143,14 @@ export function DataTable<
               ))}
           </DropdownMenuContent>
         </DropdownMenu>
+
+        {!hideAddButton && (
+          <Button asChild>
+            <Link href={'/dashboard/teachers/data-siswa/create-siswa'}>
+              + Tambah Siswa
+            </Link>
+          </Button>
+        )}
       </div>
 
       <div className="rounded-md border">

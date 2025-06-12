@@ -14,7 +14,10 @@ const fasilitas = [
 
 export default function FasilitasSection() {
   return (
-    <section className="py-20 bg-blue-50" id="fasilitas">
+    <section
+      className="flex flex-col w-full h-[900px] bg-blue-50 items-center justify-center px-5 py-20"
+      id="fasilitas"
+    >
       <div className="container mx-auto px-4 text-center">
         <h2 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6">
           🧑‍🏫 Sekilas Fasilitas

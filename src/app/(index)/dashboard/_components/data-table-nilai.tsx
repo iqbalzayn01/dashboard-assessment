@@ -12,7 +12,6 @@ import {
   SortingState,
   ColumnFiltersState,
   VisibilityState,
-  // FilterFn,
 } from '@tanstack/react-table';
 
 import {

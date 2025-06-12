@@ -34,7 +34,7 @@ export default async function EditSiswaPage({ params }: TypeParams) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <SiswaForm data={data} />
+          <SiswaForm data={data} type="EDIT" />
         </CardContent>
       </Card>
     </div>

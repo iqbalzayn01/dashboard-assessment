@@ -1,6 +1,6 @@
 'use server';
 
-import { signInSchema, parentSchema } from '@/lib/schema';
+import { signInSchema, parentSchema, registerGuruSchema } from '@/lib/schema';
 import { ActionResult } from '@/types';
 import { signIn } from '@/lib/auth';
 import bcrypt from 'bcryptjs';
@@ -62,6 +62,92 @@ export async function signInAction(
   await signIn('credentials', { email, password }, { redirectTo });
 
   return { error: null, success: 'Login berhasil.' };
+}
+
+export async function registerGuru(
+  _: unknown,
+  formData: FormData
+): Promise<ActionResult> {
+  const raw = Object.fromEntries(formData.entries());
+  const parsed = registerGuruSchema.safeParse(raw);
+
+  if (!parsed.success) {
+    const firstError = parsed.error.errors[0]?.message || 'Data tidak valid';
+    return { error: firstError };
+  }
+
+  const {
+    name,
+    email,
+    notelp,
+    password,
+    confirmPassword,
+    nip,
+    alamat,
+    jenisKelamin,
+    tanggalLahir,
+    tempatLahir,
+    agama,
+    bidangStudi,
+  } = parsed.data;
+
+  if (password !== confirmPassword) {
+    return { error: 'Konfirmasi password tidak cocok' };
+  }
+
+  try {
+    const existingUser = await prisma.user.findFirst({
+      where: {
+        OR: [{ email }, { notelp }],
+      },
+    });
+
+    if (existingUser) {
+      return { error: 'Email atau Nomor Telepon sudah digunakan' };
+    }
+
+    const existingGuru = await prisma.guru.findUnique({
+      where: { nip },
+    });
+
+    if (existingGuru) {
+      return { error: 'Data guru sudah ada' };
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await prisma.user.create({
+      data: {
+        name,
+        email,
+        notelp,
+        password: hashedPassword,
+        role: 'guru',
+        guru: {
+          create: {
+            nip,
+            alamat,
+            jenisKelamin,
+            tanggalLahir: new Date(tanggalLahir),
+            tempatLahir,
+            agama,
+            bidangStudi,
+          },
+        },
+      },
+    });
+
+    return {
+      success: 'Akun guru berhasil dibuat. Silakan masuk.',
+      error: null,
+      redirectTo: '/sign-in',
+    };
+  } catch (error) {
+    console.error('Gagal daftar guru:', error);
+    return {
+      error: 'Terjadi kesalahan saat mendaftar. Coba lagi nanti.',
+    };
+  }
 }
 
 export async function registerOrangTua(

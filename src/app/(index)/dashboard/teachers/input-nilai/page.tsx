@@ -28,7 +28,7 @@ export default async function InputNilaiPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <DataTable columns={columns} data={dataUserSiswa} />
+          <DataTable columns={columns} data={dataUserSiswa} hideAddButton />
         </CardContent>
       </Card>
     </div>

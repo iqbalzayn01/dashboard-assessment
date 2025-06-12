@@ -3,7 +3,7 @@ import React from 'react';
 
 export default function AboutUsSection() {
   return (
-    <section className="container mx-auto px-5 py-12">
+    <section className="container mx-auto flex flex-col w-full h-[900px] items-center justify-center px-5 py-20">
       <div className="flex flex-col-reverse lg:flex-row items-center justify-center gap-10">
         <Image
           src={'/img-aboutus.png'}

@@ -32,8 +32,18 @@ export function Header({ session }: HeaderProps) {
 
   const isAuthenticated = !!session;
   const authNav = isAuthenticated
-    ? { label: 'Dashboard', href: '/dashboard' }
-    : { label: 'Sign In', href: '/sign-in' };
+    ? {
+        label: 'Dashboard',
+        href:
+          session?.role === 'siswa'
+            ? '/dashboard/students'
+            : session?.role === 'guru'
+            ? '/dashboard/teachers'
+            : session?.role === 'orangtua'
+            ? '/dashboard/parents'
+            : '/',
+      }
+    : null;
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white/70 backdrop-blur-lg border-b">
@@ -64,9 +74,21 @@ export function Header({ session }: HeaderProps) {
               {label}
             </Link>
           ))}
-          <Link href={authNav.href} className="text-blue-500 font-semibold">
-            {authNav.label}
-          </Link>
+
+          {isAuthenticated && authNav ? (
+            <Link href={authNav.href} className="text-blue-500 font-semibold">
+              {authNav.label}
+            </Link>
+          ) : (
+            <>
+              <Link href="/sign-in" className="text-blue-500 font-semibold">
+                Sign In
+              </Link>
+              <Link href="/register" className="text-blue-500 font-semibold">
+                Ruang Guru
+              </Link>
+            </>
+          )}
         </nav>
 
         {/* Mobile Menu Button */}
@@ -104,13 +126,32 @@ export function Header({ session }: HeaderProps) {
               {label}
             </Link>
           ))}
-          <Link
-            href={authNav.href}
-            onClick={closeMenu}
-            className="text-blue-500 font-semibold"
-          >
-            {authNav.label}
-          </Link>
+          {isAuthenticated && authNav ? (
+            <Link
+              href={authNav.href}
+              onClick={closeMenu}
+              className="text-blue-500 font-semibold"
+            >
+              {authNav.label}
+            </Link>
+          ) : (
+            <>
+              <Link
+                href="/sign-in"
+                onClick={closeMenu}
+                className="text-blue-500 font-semibold"
+              >
+                Sign In
+              </Link>
+              <Link
+                href="/register"
+                onClick={closeMenu}
+                className="text-blue-500 font-semibold"
+              >
+                Ruang Guru
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </header>

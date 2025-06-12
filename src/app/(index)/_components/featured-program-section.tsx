@@ -28,7 +28,10 @@ const programs = [
 
 export default function ProgramUnggulanSection() {
   return (
-    <section className="py-20 bg-white" id="program">
+    <section
+      className="flex flex-col w-full h-[900px] bg-white items-center justify-center px-5 py-20"
+      id="program"
+    >
       <div className="container mx-auto px-4 text-center">
         <h2 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6">
           🧒 Program Unggulan

@@ -4,6 +4,7 @@ import * as React from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 import { Tusers } from '@/types';
 import { Button } from '@/components/ui/button';
+import FormDelete from './_components/delete-siswa-form';
 import Link from 'next/link';
 
 export const columns: ColumnDef<Tusers>[] = [
@@ -63,6 +64,7 @@ export const columns: ColumnDef<Tusers>[] = [
               Edit
             </Link>
           </Button>
+          <FormDelete id={user.id} />
         </div>
       );
     },

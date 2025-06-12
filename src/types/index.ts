@@ -83,3 +83,20 @@ export type TNilaiRow = {
   semester: number;
   tahunAjaran: string;
 };
+
+export type ExportNilaiRow = {
+  nama: string;
+  nis: string;
+  mataPelajaran: string;
+  jenisNilai: string;
+  nilai: number;
+  semester: number;
+  tahunAjaran: string;
+};
+
+export type TRekapNilaiRow = {
+  mataPelajaran: string;
+  semester: number;
+  tahunAjaran: string;
+  nilaiAkhir: number;
+};

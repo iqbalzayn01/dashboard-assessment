@@ -2,6 +2,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -13,8 +14,13 @@ import {
 } from '../../lib/data';
 import { TypeParams } from '@/types';
 import { DataTable } from './_components/data-table';
-import { columns } from './columns';
+import { DataTableRekapNilai } from '../../../../_components/data-table-rekap';
+import { columns, rekapColumns } from './columns';
+import { ExportNilaiRow } from '@/types';
+import { groupAndRekapNilai } from '@/lib/utils';
+import { Separator } from '@/components/ui/separator';
 import NilaiForm from '../../_components/nilai-form';
+import ExportButtons from '../../../../_components/ExportButtons';
 import Link from 'next/link';
 import React from 'react';
 
@@ -43,6 +49,18 @@ export default async function InputNilaiSiswa({ params }: TypeParams) {
   const dataSiswaById = siswaId ? await getDataSiswaById(siswaId) : null;
   const nilaiSiswaById = siswaId ? await getNilaiSiswaById(siswaId) : [];
 
+  const transformedData: ExportNilaiRow[] = nilaiSiswaById.map((n) => ({
+    nama: n.nama,
+    nis: n.nis,
+    mataPelajaran: n.mataPelajaran.replace(/_/g, ' '),
+    jenisNilai: n.jenisNilai,
+    nilai: n.nilai,
+    semester: n.semester,
+    tahunAjaran: n.tahunAjaran,
+  }));
+
+  const rekapData = groupAndRekapNilai(nilaiSiswaById);
+
   return (
     <div className="flex flex-col gap-4 p-4">
       <Card>
@@ -69,8 +87,27 @@ export default async function InputNilaiSiswa({ params }: TypeParams) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <DataTable columns={columns} data={nilaiSiswaById} />
+          <Card>
+            <CardHeader>
+              <CardTitle>Daftar Nilai Per Mata Pelajaran</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <DataTable columns={columns} data={nilaiSiswaById} />
+            </CardContent>
+          </Card>
+          <Separator className="my-5" />
+          <Card>
+            <CardHeader>
+              <CardTitle>Daftar Rekap Nilai Per Semester</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <DataTableRekapNilai columns={rekapColumns} data={rekapData} />
+            </CardContent>
+          </Card>
         </CardContent>
+        <CardFooter className="flex flex-col md:flex-row gap-4 justify-between">
+          <ExportButtons nilai={transformedData} rekap={rekapData} />
+        </CardFooter>
       </Card>
     </div>
   );

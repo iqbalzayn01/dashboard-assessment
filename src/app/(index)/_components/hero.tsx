@@ -11,7 +11,7 @@ export default function HeroSection() {
     <section className="relative w-full h-[900px] flex items-center justify-center px-5 md:px-10 py-20 overflow-hidden">
       <DotPattern
         className={cn(
-          '[mask-image:radial-gradient(700px_circle_at_center,white,transparent)]'
+          '[mask-image:radial-gradient(400px_circle_at_center,white,transparent)]'
         )}
       />
       <div className="relative z-10 max-w-4xl text-center">
