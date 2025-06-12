@@ -2,10 +2,10 @@
 
 import {
   BellIcon,
-  CreditCardIcon,
+  EditIcon,
   LogOutIcon,
   MoreVerticalIcon,
-  UserCircleIcon,
+  UserIcon,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -27,6 +27,7 @@ import { ActionResult, TuserSession } from '@/types';
 import { Alert, AlertTitle } from '@/components/ui/alert';
 import { useActionState } from 'react';
 import { signOutActions } from '../lib/actions';
+import Link from 'next/link';
 
 const initialState: ActionResult = {
   error: '',
@@ -89,13 +90,11 @@ export function NavUser({ user }: NavUserProps) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <UserCircleIcon />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <BellIcon />
-                Notifications
+              <DropdownMenuItem asChild>
+                <Link href={`/dashboard/teachers/detail-guru/${user?.id}`}>
+                  <UserIcon className="mr-2 h-4 w-4" />
+                  Profil
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

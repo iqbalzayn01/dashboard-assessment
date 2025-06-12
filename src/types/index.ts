@@ -1,3 +1,5 @@
+import { number } from 'zod';
+
 export type ActionResult = {
   error: string | null;
   success?: string;
@@ -49,6 +51,25 @@ export type Tusers = {
       jenisNilai: string;
       tahunAjaran: string;
     }[];
+  };
+};
+
+export type TusersGuru = {
+  id: number;
+  name: string;
+  email: string;
+  notelp: string;
+  role: string;
+  imgUrl?: string | null;
+  guru?: {
+    id: number;
+    nip: string;
+    alamat: string;
+    jenisKelamin: string;
+    tanggalLahir: Date;
+    tempatLahir: string;
+    agama: string;
+    bidangStudi: string;
   };
 };
 

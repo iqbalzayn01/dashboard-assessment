@@ -85,7 +85,8 @@ export default function SignInForm({
               <SubmitButton />
             </div>
             <div className="mt-4 text-center text-sm">
-              Daftar sebagai orang tua siswa?
+              Daftar sebagai{' '}
+              <span className="text-blue-500">orang tua siswa</span>?{' '}
               <Link href="/sign-up" className="underline underline-offset-4">
                 Daftar di sini
               </Link>

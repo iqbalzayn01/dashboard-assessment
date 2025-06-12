@@ -7,7 +7,7 @@ import {
   CardFooter,
 } from '@/components/ui/card';
 import { TypeParams } from '@/types';
-import { getDataUserSiswaById } from '../../lib/data';
+import { getDataUserGuruById } from '../../lib/data';
 import { Alert, AlertTitle } from '@/components/ui/alert';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
@@ -19,17 +19,17 @@ import React from 'react';
 function CAlert() {
   return (
     <Alert variant="destructive">
-      <AlertTitle>Data siswa tidak ditemukan.</AlertTitle>
-      <Link href={'/dashboard/teachers/data-siswa'} className="underline">
+      <AlertTitle>Data guru tidak ditemukan.</AlertTitle>
+      <Link href={'/dashboard/teachers'} className="underline">
         Kembali
       </Link>
     </Alert>
   );
 }
 
-export default async function DetailSiswa({ params }: TypeParams) {
+export default async function DetailGuru({ params }: TypeParams) {
   const getParams = await params;
-  const data = await getDataUserSiswaById(Number(getParams.id));
+  const data = await getDataUserGuruById(Number(getParams.id));
 
   if (!data) {
     return <CAlert />;
@@ -39,9 +39,9 @@ export default async function DetailSiswa({ params }: TypeParams) {
     <div className="flex flex-col gap-4 p-4">
       <Card>
         <CardHeader>
-          <CardTitle>Data Siswa {data.name}</CardTitle>
+          <CardTitle>Data Diri {data.name}</CardTitle>
           <CardDescription>
-            Data diri siswa SD Negeri Karadenan 01
+            Data diri guru SD Negeri Karadenan 01
           </CardDescription>
         </CardHeader>
         <Separator />
@@ -61,6 +61,10 @@ export default async function DetailSiswa({ params }: TypeParams) {
                 <span>{data.name}</span>
               </div>
               <div className="space-y-1">
+                <Label>Nama</Label>
+                <span className="capitalize">{data.role}</span>
+              </div>
+              <div className="space-y-1">
                 <Label>Email</Label>
                 <span>{data.email}</span>
               </div>
@@ -70,33 +74,33 @@ export default async function DetailSiswa({ params }: TypeParams) {
               </div>
               <div className="space-y-1">
                 <Label>NIS</Label>
-                <span>{data.siswa?.nis}</span>
+                <span>{data.guru?.nip}</span>
               </div>
               <div className="space-y-1">
                 <Label>Kelas</Label>
-                <span>{data.siswa?.kelas}</span>
+                <span>{data.guru?.bidangStudi}</span>
               </div>
               <div className="space-y-1">
                 <Label>Alamat</Label>
-                <span>{data.siswa?.alamat}</span>
+                <span>{data.guru?.alamat}</span>
               </div>
               <div className="space-y-1">
                 <Label>Jenis Kelamin</Label>
-                <span>{data.siswa?.jenisKelamin}</span>
+                <span>{data.guru?.jenisKelamin}</span>
               </div>
               <div className="space-y-1">
                 <Label>Tanggal Lahir</Label>
                 <span>
-                  {data.siswa?.tanggalLahir.toISOString().split('T')[0]}
+                  {data.guru?.tanggalLahir.toISOString().split('T')[0]}
                 </span>
               </div>
               <div className="space-y-1">
                 <Label>Tempat Lahir</Label>
-                <span>{data.siswa?.tempatLahir}</span>
+                <span>{data.guru?.tempatLahir}</span>
               </div>
               <div className="space-y-1">
                 <Label>Agama</Label>
-                <span>{data.siswa?.agama}</span>
+                <span>{data.guru?.agama}</span>
               </div>
             </div>
           </div>
@@ -104,11 +108,11 @@ export default async function DetailSiswa({ params }: TypeParams) {
         <CardFooter>
           <div className="flex justify-end gap-4 mt-4">
             <Button variant="outline" asChild>
-              <Link href={'/dashboard/teachers/data-siswa'}>Kembali</Link>
+              <Link href={'/dashboard/teachers'}>Kembali</Link>
             </Button>
             <Button variant="outline" asChild>
               <Link
-                href={`/dashboard/teachers/data-siswa/edit-siswa/${data.id}`}
+                href={`/dashboard/teachers/detail-guru/edit-guru/${data.id}`}
               >
                 Edit
               </Link>

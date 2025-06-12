@@ -23,7 +23,7 @@ function CAlert() {
   return (
     <Alert variant="destructive">
       <AlertTitle>Data siswa tidak ditemukan.</AlertTitle>
-      <Link href={'/dashboard/teachers/input-nilai'} className="underline">
+      <Link href={'/dashboard/students'} className="underline">
         Kembali
       </Link>
     </Alert>
