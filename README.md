@@ -34,6 +34,19 @@ Sistem informasi akademik berbasis web modern untuk sekolah dasar, mendukung per
 
 ---
 
+## 🔷 Diagram-Diagram
+### Use Case Diagram
+<img width="3328" alt="diagram use case" src="https://github.com/user-attachments/assets/45fef7b1-cc7f-4397-9d51-46b6ffd838bd" />
+
+### Activity Diagram
+<img width="2724" alt="Activity Diagram Website Dashboard Penilaian Siswa_GURU" src="https://github.com/user-attachments/assets/70399e81-4739-4d86-8799-4e87253dbf4b" />
+
+<img width="1876" alt="Activity Diagram Website Dashboard Penilaian Siswa_SISWA" src="https://github.com/user-attachments/assets/de23aacb-2c2a-40b9-b16c-d3c18971530a" />
+
+<img width="1876" alt="Activity Diagram Website Dashboard Penilaian Siswa_ORANGTUA" src="https://github.com/user-attachments/assets/14f1d599-b5d6-4503-90be-fbd9de804769" />
+
+---
+
 ## 🚀 Cara Menjalankan Project
 
 ### 1. Clone Repository
