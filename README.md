@@ -1,4 +1,4 @@
-<img width="1876" alt="Activity Diagram Website Dashboard Penilaian Siswa_SISWA" src="https://github.com/user-attachments/assets/c04ee3a3-ab6c-472a-b079-0f853b0b7949" /><img width="3328" alt="diagram use case" src="https://github.com/user-attachments/assets/6e83632d-ab5d-4088-9b43-ee807142968e" /><img width="3328" alt="diagram use case" src="https://github.com/user-attachments/assets/6e83632d-ab5d-4088-9b43-ee807142968e" /><img width="2724" alt="Activity Diagram Website Dashboard Penilaian Siswa_GURU" src="https://github.com/user-attachments/assets/3e40ecb3-2566-4847-9cee-29b0c1915a4d" /><img width="2724" alt="Activity Diagram Website Dashboard Penilaian Siswa_GURU" src="https://github.com/user-attachments/assets/24629187-1add-484a-ae50-90380d910f5f" /><img width="2724" alt="Activity Diagram Website Dashboard Penilaian Siswa_GURU" src="https://github.com/user-attachments/assets/24629187-1add-484a-ae50-90380d910f5f" /># 📘 SD Negeri Karadenan 01 — Dashboard Sekolah Digital
+# 📘 SD Negeri Karadenan 01 — Dashboard Sekolah Digital
 
 Website resmi **SD Negeri Karadenan 01**:  
 🌐 [https://www.sdnegerikaradenan01.site](https://www.sdnegerikaradenan01.site)  
