@@ -1,4 +1,4 @@
-# 📘 SD Negeri Karadenan 01 — Dashboard Sekolah Digital
+<img width="1876" alt="Activity Diagram Website Dashboard Penilaian Siswa_SISWA" src="https://github.com/user-attachments/assets/c04ee3a3-ab6c-472a-b079-0f853b0b7949" /><img width="3328" alt="diagram use case" src="https://github.com/user-attachments/assets/6e83632d-ab5d-4088-9b43-ee807142968e" /><img width="3328" alt="diagram use case" src="https://github.com/user-attachments/assets/6e83632d-ab5d-4088-9b43-ee807142968e" /><img width="2724" alt="Activity Diagram Website Dashboard Penilaian Siswa_GURU" src="https://github.com/user-attachments/assets/3e40ecb3-2566-4847-9cee-29b0c1915a4d" /><img width="2724" alt="Activity Diagram Website Dashboard Penilaian Siswa_GURU" src="https://github.com/user-attachments/assets/24629187-1add-484a-ae50-90380d910f5f" /><img width="2724" alt="Activity Diagram Website Dashboard Penilaian Siswa_GURU" src="https://github.com/user-attachments/assets/24629187-1add-484a-ae50-90380d910f5f" /># 📘 SD Negeri Karadenan 01 — Dashboard Sekolah Digital
 
 Website resmi **SD Negeri Karadenan 01**:  
 🌐 [https://www.sdnegerikaradenan01.site](https://www.sdnegerikaradenan01.site)  
@@ -36,14 +36,14 @@ Sistem informasi akademik berbasis web modern untuk sekolah dasar, mendukung per
 
 ## 🔷 Diagram-Diagram
 ### Use Case Diagram
-<img width="3328" alt="diagram use case" src="https://github.com/user-attachments/assets/45fef7b1-cc7f-4397-9d51-46b6ffd838bd" />
+<img width="3328" alt="diagram use case" src="https://github.com/user-attachments/assets/0f494dc8-b818-44df-83b5-4160ddee5429" />
 
 ### Activity Diagram
-<img width="2724" alt="Activity Diagram Website Dashboard Penilaian Siswa_GURU" src="https://github.com/user-attachments/assets/70399e81-4739-4d86-8799-4e87253dbf4b" />
+<img width="2724" alt="Activity Diagram Website Dashboard Penilaian Siswa_GURU" src="https://github.com/user-attachments/assets/3e40ecb3-2566-4847-9cee-29b0c1915a4d" />
 
-<img width="1876" alt="Activity Diagram Website Dashboard Penilaian Siswa_SISWA" src="https://github.com/user-attachments/assets/de23aacb-2c2a-40b9-b16c-d3c18971530a" />
+<img width="1876" alt="Activity Diagram Website Dashboard Penilaian Siswa_SISWA" src="https://github.com/user-attachments/assets/c04ee3a3-ab6c-472a-b079-0f853b0b7949" />
 
-<img width="1876" alt="Activity Diagram Website Dashboard Penilaian Siswa_ORANGTUA" src="https://github.com/user-attachments/assets/14f1d599-b5d6-4503-90be-fbd9de804769" />
+<img width="1876" alt="Activity Diagram Website Dashboard Penilaian Siswa_ORANGTUA" src="https://github.com/user-attachments/assets/f7904793-d904-4417-9e81-452663a198d3" />
 
 ---
 
