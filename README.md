@@ -21,8 +21,8 @@ Sistem informasi akademik berbasis web modern untuk sekolah dasar, mendukung per
 
 | Teknologi          | Deskripsi                                                   |
 | ------------------ | ----------------------------------------------------------- |
-| **Next.js 14**     | Framework React fullstack dengan App Router.                |
-| **React 18**       | Library UI utama.                                           |
+| **Next.js**        | Framework React fullstack dengan App Router.                |
+| **React**          | Library UI utama.                                           |
 | **Auth.js**        | Autentikasi serverless berbasis role (guru/siswa/orangtua). |
 | **Supabase**       | Database PostgreSQL dan storage untuk file upload.          |
 | **Prisma ORM**     | Manajemen data dan skema relasional secara efisien.         |
