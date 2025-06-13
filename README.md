@@ -1,36 +1,167 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📘 SD Negeri Karadenan 01 — Dashboard Sekolah Digital
 
-## Getting Started
+Website resmi **SD Negeri Karadenan 01**:  
+🌐 [https://www.sdnegerikaradenan01.site](https://www.sdnegerikaradenan01.site)  
+Sistem informasi akademik berbasis web modern untuk sekolah dasar, mendukung peran Guru, Siswa, dan Orang Tua dalam proses pembelajaran dan penilaian digital.
 
-First, run the development server:
+---
+
+## ✨ Fitur Utama
+
+- 🧑‍🏫 Dashboard Guru: Input & edit nilai, data siswa, dan pengelolaan informasi akademik.
+- 🧒 Dashboard Siswa: Melihat nilai dan detail profil pribadi.
+- 👨‍👩‍👧 Dashboard Orang Tua: Pantau nilai anak dan informasi pribadi.
+- 🖼️ Upload foto profil siswa & guru.
+- 📊 Rekap nilai dalam bentuk Excel & PDF.
+- 🎨 UI modern & interaktif menggunakan `shadcn/ui`, `magicui.design`, dan `framer-motion`.
+
+---
+
+## 🛠️ Teknologi yang Digunakan
+
+| Teknologi          | Deskripsi                                                   |
+| ------------------ | ----------------------------------------------------------- |
+| **Next.js 14**     | Framework React fullstack dengan App Router.                |
+| **React 18**       | Library UI utama.                                           |
+| **Auth.js**        | Autentikasi serverless berbasis role (guru/siswa/orangtua). |
+| **Supabase**       | Database PostgreSQL dan storage untuk file upload.          |
+| **Prisma ORM**     | Manajemen data dan skema relasional secara efisien.         |
+| **Shadcn/ui**      | Komponen UI modular dan stylish berbasis Tailwind.          |
+| **MagicUI.design** | Komponen & animasi interaktif siap pakai.                   |
+| **Framer Motion**  | Animasi UI halus dan responsif.                             |
+| **Vercel**         | Hosting & deployment CI/CD (Next.js ready).                 |
+| **pnpm**           | Paket manager ringan dan cepat untuk dependency.            |
+
+---
+
+## 🚀 Cara Menjalankan Project
+
+### 1. Clone Repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/username/sd-karadenan01.git
+cd sd-karadenan01
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install Dependency
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3. Buat File Environment
 
-## Learn More
+Buat file `.env` berdasarkan `.env.example`:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+cp .env.example .env
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Isi variabel seperti:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```env
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+SUPABASE_SERVICE_ROLE_KEY=...
+AUTH_SECRET=...
+AUTH_URL=...
+```
 
-## Deploy on Vercel
+### 4. Setup Database via Prisma
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+pnpm dlx prisma generate
+pnpm dlx prisma migrate dev --name init
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 5. Jalankan Server Lokal
+
+```bash
+pnpm dev
+```
+
+Website akan berjalan di:  
+🔗 `http://localhost:3000`
+
+---
+
+## 🧪 Testing dan Reset Database
+
+### Reset Database (Opsional, Dev Only)
+
+```bash
+pnpm dlx prisma migrate reset
+```
+
+---
+
+## 🧩 Struktur Folder Penting
+
+```
+/app
+  /dashboard
+    /teachers
+    /students
+    /parents
+/components
+  /ui       ← komponen shadcn
+  /magicui  ← animasi dan efek khusus
+/lib
+  auth.ts   ← konfigurasi Auth.js
+  prisma.ts ← koneksi Prisma
+  supabase/ ← helper untuk upload, delete file
+/types
+  index.ts  ← definisi tipe untuk user, siswa, guru
+```
+
+---
+
+## 🔐 Roles & Autentikasi
+
+- `guru`: akses penuh terhadap input & edit data siswa.
+- `siswa`: hanya melihat data dan nilai pribadi.
+- `orangtua`: melihat data & nilai anak terkait.
+
+Autentikasi menggunakan `Auth.js`, session ditangani secara server-side.
+
+---
+
+## 📤 Deployment
+
+Project ini menggunakan **Vercel** untuk deployment:
+
+- Auto deploy saat push ke `main`
+- Preview deploy untuk PR
+- Perlu konfigurasi environment variables di dashboard Vercel
+
+---
+
+## 📷 Fitur Tambahan
+
+- **Upload Foto Profil**  
+  Upload disimpan ke Supabase Storage dan ditampilkan dengan `next/image`.
+
+- **Download Nilai**
+  - Format **Excel** → SheetJS (`xlsx`)
+  - Format **PDF** → `@react-pdf/renderer`
+
+---
+
+## 👨‍💻 Kontribusi
+
+Untuk berkontribusi:
+
+1. Fork repo
+2. Buat branch baru (`feat/nama-fitur`)
+3. Commit dan push
+4. Buat Pull Request
+
+---
+
+## 📄 Lisensi
+
+Proyek ini dibuat untuk keperluan edukasi & digitalisasi sekolah.  
+Hak cipta © 2025 SD Negeri Karadenan 01.  
+Penggunaan ulang hanya dengan izin.
+
+---
