@@ -45,6 +45,12 @@ Sistem informasi akademik berbasis web modern untuk sekolah dasar, mendukung per
 
 <img width="1876" alt="Activity Diagram Website Dashboard Penilaian Siswa_ORANGTUA" src="https://github.com/user-attachments/assets/f7904793-d904-4417-9e81-452663a198d3" />
 
+### Entity Relationship Diagram (ERD)
+<img width="10224" alt="Entity Relationship Diagram (ERD)" src="https://github.com/user-attachments/assets/3729ea2a-da71-4405-8933-e77d9961c2c9" />
+
+### Logical Record Structure (LRS)
+<img width="9056" alt="Logical Record Structure (LRS)" src="https://github.com/user-attachments/assets/fedec322-6e49-47f1-9a8f-5ed4aabc9e9f" />
+
 ---
 
 ## 🚀 Cara Menjalankan Project
