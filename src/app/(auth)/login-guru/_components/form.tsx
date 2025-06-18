@@ -96,14 +96,14 @@ export default function SignInForm({
                 Daftar di sini
               </Link>
             </div>
-            <div className="mt-4 text-center text-sm">
+            {/* <div className="mt-4 text-center text-sm">
               <Link
                 href="/"
                 className="text-sm text-center text-muted-foreground hover:text-primary hover:underline underline-offset-4"
               >
                 Masuk ke Halaman Utama
               </Link>
-            </div>
+            </div> */}
           </form>
         </CardContent>
         <BorderBeam duration={8} size={100} />
