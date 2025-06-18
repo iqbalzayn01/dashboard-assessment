@@ -49,7 +49,9 @@ export default function SignInForm({
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card className="relative overflow-hidden">
         <CardHeader>
-          <CardTitle className="text-2xl text-center">Masuk</CardTitle>
+          <CardTitle className="text-2xl text-center">
+            Masuk Sebagai <span className="text-blue-500">Guru</span>
+          </CardTitle>
           <CardDescription className="text-center">
             Masukkan email Anda di bawah ini untuk masuk ke akun Anda
           </CardDescription>
@@ -86,8 +88,11 @@ export default function SignInForm({
             </div>
             <div className="mt-4 text-center text-sm">
               Daftar sebagai{' '}
-              <span className="text-blue-500">orang tua siswa</span>?{' '}
-              <Link href="/sign-up" className="underline underline-offset-4">
+              <span className="text-blue-500 font-semibold">Guru</span>?{' '}
+              <Link
+                href="/register-guru"
+                className="underline underline-offset-4 hover:text-blue-500"
+              >
                 Daftar di sini
               </Link>
             </div>
@@ -96,7 +101,7 @@ export default function SignInForm({
                 href="/"
                 className="text-sm text-center text-muted-foreground hover:text-primary hover:underline underline-offset-4"
               >
-                Kembali ke beranda
+                Masuk ke Halaman Utama
               </Link>
             </div>
           </form>

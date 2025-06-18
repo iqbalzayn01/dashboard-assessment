@@ -138,9 +138,9 @@ export async function registerGuru(
     });
 
     return {
-      success: 'Akun guru berhasil dibuat. Silakan masuk.',
       error: null,
-      redirectTo: '/sign-in',
+      success: 'Akun guru berhasil dibuat. Silakan masuk.',
+      redirectTo: '/login-guru',
     };
   } catch (error) {
     console.error('Gagal daftar guru:', error);
@@ -207,7 +207,7 @@ export async function registerOrangTua(
     return {
       error: null,
       success: 'Akun berhasil dibuat. Silakan masuk.',
-      redirectTo: '/sign-in',
+      redirectTo: '/login-orangtua',
     };
   } catch (error) {
     console.error('Gagal daftar orang tua:', error);

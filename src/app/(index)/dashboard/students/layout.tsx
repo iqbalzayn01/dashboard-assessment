@@ -31,7 +31,7 @@ export default async function RootLayout({
   const session = await auth();
 
   if (!session || !session.user) {
-    return redirect('/sign-in');
+    return redirect('/login-siswa');
   }
 
   if (session.user.role !== 'siswa') {

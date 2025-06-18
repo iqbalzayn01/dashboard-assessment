@@ -35,7 +35,7 @@ export default async function ParentsPage() {
   const session = await auth();
 
   if (!session || !session.user) {
-    return redirect('/sign-in');
+    return redirect('/login-orangtua');
   }
 
   const data = await getDataOrangTua(Number(session.user.id));

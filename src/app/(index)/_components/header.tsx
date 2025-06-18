@@ -81,11 +81,14 @@ export function Header({ session }: HeaderProps) {
             </Link>
           ) : (
             <>
-              <Link href="/sign-in" className="text-blue-500 font-semibold">
-                Sign In
+              <Link href="/login-siswa" className="text-blue-500 font-semibold">
+                Masuk
               </Link>
-              <Link href="/register" className="text-blue-500 font-semibold">
-                Ruang Guru
+              <Link
+                href="/register-orangtua"
+                className="text-blue-500 font-semibold"
+              >
+                Masuk Sebagai Orang Tua
               </Link>
             </>
           )}
@@ -137,18 +140,18 @@ export function Header({ session }: HeaderProps) {
           ) : (
             <>
               <Link
-                href="/sign-in"
+                href="/login-siswa"
                 onClick={closeMenu}
                 className="text-blue-500 font-semibold"
               >
-                Sign In
+                Masuk
               </Link>
               <Link
-                href="/register"
+                href="/register-orangtua"
                 onClick={closeMenu}
                 className="text-blue-500 font-semibold"
               >
-                Ruang Guru
+                Masuk Sebagai Orang Tua
               </Link>
             </>
           )}
