@@ -85,7 +85,7 @@ export function Header({ session }: HeaderProps) {
                 Masuk
               </Link>
               <Link
-                href="/register-orangtua"
+                href="/login-orangtua"
                 className="text-blue-500 font-semibold"
               >
                 Masuk Sebagai Orang Tua
@@ -147,7 +147,7 @@ export function Header({ session }: HeaderProps) {
                 Masuk
               </Link>
               <Link
-                href="/register-orangtua"
+                href="/login-orangtua"
                 onClick={closeMenu}
                 className="text-blue-500 font-semibold"
               >

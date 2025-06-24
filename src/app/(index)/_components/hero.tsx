@@ -23,7 +23,7 @@ export default function HeroSection() {
           Sekolah Dasar Negeri yang berkomitmen pada pendidikan berkualitas
           dengan lingkungan belajar yang ramah, inklusif, dan inspiratif.
         </p>
-        <Link href="/sign-in">
+        <Link href="/login-siswa">
           <RainbowButton className="cursor-pointer text-white bg-blue-400 hover:bg-blue-500 transition-colors">
             Mulai Sekarang
           </RainbowButton>
