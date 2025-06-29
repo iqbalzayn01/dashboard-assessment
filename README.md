@@ -51,6 +51,9 @@ Sistem informasi akademik berbasis web modern untuk sekolah dasar, mendukung per
 ### Logical Record Structure (LRS)
 <img width="9056" alt="Logical Record Structure (LRS)" src="https://github.com/user-attachments/assets/fedec322-6e49-47f1-9a8f-5ed4aabc9e9f" />
 
+### Class Diagram
+<img width="9056" alt="Class Diagram" src="https://github.com/user-attachments/assets/e5f2d4a0-a259-42a6-adb7-9738d3f3f728" />
+
 ---
 
 ## 🚀 Cara Menjalankan Project
