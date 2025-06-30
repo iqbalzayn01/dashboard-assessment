@@ -54,6 +54,9 @@ Sistem informasi akademik berbasis web modern untuk sekolah dasar, mendukung per
 ### Class Diagram
 <img width="9056" alt="Class Diagram" src="https://github.com/user-attachments/assets/e5f2d4a0-a259-42a6-adb7-9738d3f3f728" />
 
+### Sequence Diagram
+<img width="5712" alt="Sequence Diagram - User Login" src="https://github.com/user-attachments/assets/4ad1db61-5699-4f21-8e53-f02cbe62ee2b" />
+
 ---
 
 ## 🚀 Cara Menjalankan Project
