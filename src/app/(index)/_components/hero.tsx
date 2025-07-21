@@ -3,18 +3,19 @@
 import { cn } from '@/lib/utils';
 import { RainbowButton } from '@/components/magicui/rainbow-button';
 import { DotPattern } from '@/components/magicui/dot-pattern';
+import Image from 'next/image';
 import React from 'react';
 import Link from 'next/link';
 
 export default function HeroSection() {
   return (
-    <section className="relative w-full h-[900px] flex items-center justify-center px-5 md:px-10 py-20 overflow-hidden">
+    <section className="relative w-full h-full flex flex-col items-center justify-center gap-10 py-20 overflow-hidden">
       <DotPattern
         className={cn(
           '[mask-image:radial-gradient(400px_circle_at_center,white,transparent)]'
         )}
       />
-      <div className="relative z-10 max-w-4xl text-center">
+      <div className="relative z-10 max-w-4xl text-center px-5 md:px-10">
         <p className="text-xl mb-4">Selamat Datang di SD Negeri Karadenan 01</p>
         <h1 className="text-4xl md:text-6xl text-blue-500 font-bold mb-4">
           Membangun Generasi Cerdas, Berkarakter, dan Berdaya Saing
@@ -29,6 +30,13 @@ export default function HeroSection() {
           </RainbowButton>
         </Link>
       </div>
+      <Image
+        src={'/img-hero.jpg'}
+        width={1300}
+        height={800}
+        alt="Hero Image"
+        className="object-cover w-full h-full"
+      />
     </section>
   );
 }
