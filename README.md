@@ -2,6 +2,10 @@
 
 Website resmi **SD Negeri Karadenan 01**:  
 🌐 [https://www.sdnegerikaradenan01.site](https://www.sdnegerikaradenan01.site)  
+
+Website Ruang Khusus Guru:
+🌐 [https://ruangguru.sdnegerikaradenan01.site/](https://ruangguru.sdnegerikaradenan01.site/)
+
 Sistem informasi akademik berbasis web modern untuk sekolah dasar, mendukung peran Guru, Siswa, dan Orang Tua dalam proses pembelajaran dan penilaian digital.
 
 ---
